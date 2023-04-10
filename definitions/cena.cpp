@@ -1,57 +1,66 @@
-#include <iostream>
+#include "Intersecoes.cpp"
+#include <vector>
 
-using namespace std;
+struct Luz
+{
+    Vec3 posicao;
+    Cor cor;
 
-class Cena{
+    Luz(Vec3 pos, Cor c)
+    {
+        posicao = pos;
+        cor = c;
+    }
+};
+
+class Cena
+{
 public:
-    int* l[10];
-    int ambiente[3];
-    int* obj[10];
-    int contador = 0;
+    vector<Luz> luzes{};
+    Cor cor;
+    // vector<Forma> obj;
 
-    void luz(int luz[]){
-        int L[6];
-        for(int i = 0; i< 3; i++){
-            L[i] = luz[i];
-        };
-        for(int i = 3; i< 6; i++){
-            L[i] = luz[i];
-        };
-        l[contador] = L;
-        contador++;
-    };
+    Cena(Cor c)
+    {
+        cor = c;
+    }
 
-    void ambi(int amb[]){
-        for(int i = 0; i< 3; i++){
-            ambiente[i] = amb[i];
-
-        };
+    void addLuz(Luz luz)
+    {
+        luzes.insert(luzes.end(), luz);
     };
 };
 
-int main(){
-    cout << "Hello world!" << endl;
-    char value;
-    int luza[6];
-    int ambientes[3];
-    int val;
+// int main()
+// {
+//     cout << "Hello world!" << endl;
+//     char value;
+//     int luza[6];
+//     int ambientes[3];
+//     int val;
 
-    Cena cena;
-    while (cin >> value){
-      if(value=='l'){
-            for(int i=0; i<6; i++){
-                cin >> val;
-                luza[i] = val;
-            }
-            cena.luz(luza);
-      }else if(value == 'a'){
-            for(int i=0; i<3; i++){
-                    cin >> val;
-                ambientes[i] = val;
-            }
-            cena.ambi(ambientes);
-      }
-    };
-    cout << "Hello world!" << endl;
-    return 0;
-}
+//     Cena cena;
+//     while (cin >> value)
+//     {
+//         if (value == 'l')
+//         {
+//             for (int i = 0; i < 6; i++)
+//             {
+//                 cin >> val;
+//                 luza[i] = val;
+//             }
+//             cena.luz(luza);
+//         }
+//         else if (value == 'a')
+//         {
+//             for (int i = 0; i < 3; i++)
+//             {
+//                 cin >> val;
+//                 ambientes[i] = val;
+//             }
+//             cena.ambi(ambientes);
+//         }
+//     };
+//     cout << "Hello world!" << endl;
+//     return 0;
+// }

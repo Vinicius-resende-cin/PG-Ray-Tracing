@@ -6,7 +6,7 @@
 
 using namespace std;
 
-Cena cena = Cena(Cor(100, 100, 100), Light(Vec3(40, 400, 100), Cor(255, 255, 255)));
+Cena cena = Cena(Cor(100, 100, 100));
 
 Vec3 camPos = Vec3(0, 0, 0);
 Vec3 camDir = Vec3(1, 0, 0);
@@ -23,6 +23,10 @@ Esfera esf = Esfera(0.5f, 0.5f, 0.1f, 3, Vec3(1000, 0, 0), 900, Cor(100, 0, 255)
 
 int main()
 {
+    // definição da cena
+    cena.addLuz(Luz(Vec3(40, 400, 100), Cor(255, 255, 255)));
+    cena.addLuz(Luz(Vec3(40, -400, 100), Cor(255, 255, 255)));
+
     // Create a vector of RGBA pixels
     vector<unsigned char> image(pixelsX * pixelsY * 4);
 
