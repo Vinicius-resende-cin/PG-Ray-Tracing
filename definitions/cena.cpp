@@ -1,4 +1,4 @@
-#include "Intersecoes.cpp"
+#include "Camera.cpp"
 #include <vector>
 
 struct Luz

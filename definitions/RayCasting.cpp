@@ -1,26 +1,26 @@
 #include "Phong.cpp"
 
-Cor rayCasting(Cena cena, const Vec3 &camPos, const Vec3 &camDir, const Vec3 &vUp, float camToS, int hx, int hy, int telaPx, int telaPy, int px, int py)
+Cor rayCasting(Cena cena, const Camera &cam, int telaPx, int telaPy, int px, int py)
 {
+    // mapeia as coordenadas do pixel entre -1 e 1
+    float coordX = ((float)px / (float)telaPx) * 2.0f - 1.0f;
+    float coordY = ((float)py / (float)telaPy) * 2.0f - 1.0f;
+
     // Calcula dimensões do pixel
-    float alturapixel = hy * 2 / telaPy;
-    float largurapixel = hx * 2 / telaPx;
+    float alturapixel = cam.altura * 2 / telaPy;
+    float largurapixel = cam.largura * 2 / telaPx;
 
-    // Encontra o centro da tela
-    Vec3 centroTela = camPos + (camDir * camToS);
+    // Encontra o vetor que aponta para o centro da tela
+    Vec3 centroTela = -(cam.W * cam.d);
 
-    // Calcula os vetores de movimentação
-    Vec3 vetorDireita = -Vec3(0, 1, 0) * largurapixel;
-    Vec3 vetorBaixo = -Vec3(0, 0, 1) * alturapixel;
+    // Calcula os vetores de localização pela tela
+    Vec3 vetorDireita = -cam.U * cam.largura;
+    Vec3 vetorCima = cam.V * cam.altura;
 
-    // Encontra o centro do pixel superior esquerdo (0, 0)
-    Vec3 cantoSupEsq = centroTela + (Vec3(0, 1, 0) * hx) - (Vec3(0, 0, -1) * hy);
-    Vec3 pixelSupEsq = cantoSupEsq + 0.5 * vetorDireita + 0.5 * vetorBaixo;
+    // Encontra o vetor que passa pelo pixel (px, py) na tela
+    const Vec3 pixelAtual = centroTela - coordY * vetorCima + coordX * vetorDireita;
 
-    // Encontra o pixel (px, py) na tela
-    const Vec3 pixelAtual = pixelSupEsq + py * vetorBaixo + px * vetorDireita;
-
-    Ray raioPixelAtual = Ray(camPos, pixelAtual);
+    Ray raioPixelAtual = Ray(cam.posicao, pixelAtual);
     Intersecao intersec = Intersecao(raioPixelAtual);
 
     for (int i = 0; i < cena.esferas.size(); i++)
