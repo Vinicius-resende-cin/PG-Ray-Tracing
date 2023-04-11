@@ -29,11 +29,11 @@ public:
 
     ~Vec3();
 
-    float comp(); // comprimento
+    float comp() const; // comprimento
 
-    float comp2(); // comprimento
+    float comp2() const; // comprimento
 
-    Vec3 normalizar(); // normalização de vetores
+    Vec3 normalizar() const; // normalização de vetores
 
     Vec3 neg() const; // negativo
 

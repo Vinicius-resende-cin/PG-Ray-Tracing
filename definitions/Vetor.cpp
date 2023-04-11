@@ -20,17 +20,17 @@ Vec3::Vec3(Vec3 const &v) : x(v.x), y(v.y), z(v.z)
 
 Vec3::~Vec3() {}
 
-inline float Vec3::comp2()
+inline float Vec3::comp2() const
 {
 	return qdd(x) + qdd(y) + qdd(z);
 }
 
-inline float Vec3::comp()
+inline float Vec3::comp() const
 {
 	return sqrt(comp2());
 }
 
-Vec3 Vec3::normalizar()
+Vec3 Vec3::normalizar() const
 {
 	float mag = comp();
 	return Vec3(x / mag, y / mag, z / mag);
