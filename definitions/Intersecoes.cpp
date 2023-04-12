@@ -1,6 +1,8 @@
 #include "Intersecoes.hpp"
 using namespace std;
 
+#define EPSILON 0.000001f
+
 Plano::Plano(float ka, float kd, float ks, float eta,
 			 const Vec3 &posicao, const Vec3 &normal,
 			 const Cor &cor) : Forma(ka, kd, ks, eta, cor),
@@ -15,7 +17,7 @@ bool Plano::intersecta(Intersecao &intersecao)
 {
 	// verifica se intersecta
 	float prodEscDirNor = pr_esc(intersecao.ray.direcao, normal);
-	if (prodEscDirNor == 0.0f)
+	if (prodEscDirNor > -EPSILON && prodEscDirNor < EPSILON)
 	{
 		return false;
 	}
@@ -36,7 +38,7 @@ bool Plano::INTERSECTA(const Ray &ray)
 {
 	// verifica se intersecta
 	float prodEscDirNor = pr_esc(ray.direcao, normal);
-	if (prodEscDirNor == 0.0f)
+	if (prodEscDirNor > -EPSILON && prodEscDirNor < EPSILON)
 	{
 		return false; // raio paralelo
 	}
@@ -145,11 +147,12 @@ bool Triangulo::intersecta(Intersecao &intersecao)
 	Vec3 edge1 = vertices[1] - vertices[0];
 	Vec3 edge2 = vertices[2] - vertices[0];
 	Vec3 h = pr_vet(intersecao.ray.direcao, edge2);
+	// h = h.normalizar();
 
 	// check if ray is parallel
 
 	float a = pr_esc(edge1, h);
-	if (a == 0)
+	if (a < EPSILON)
 		return false; // raio paralelo
 
 	// find beta coordinate
@@ -173,6 +176,8 @@ bool Triangulo::intersecta(Intersecao &intersecao)
 	if (_t > rayTMin && _t < intersecao.t) // point intersection
 	{
 		intersecao.t = _t;
+		intersecao.pForma = this;
+		intersecao.cor = cor;
 		return true;
 	}
 	else // line intersection
@@ -186,11 +191,12 @@ bool Triangulo::INTERSECTA(const Ray &ray)
 	Vec3 edge1 = vertices[1] - vertices[0];
 	Vec3 edge2 = vertices[2] - vertices[0];
 	Vec3 h = pr_vet(ray.direcao, edge2);
+	// h = h.normalizar();
 
 	// check if ray is parallel
 
 	float a = pr_esc(edge1, h);
-	if (a == 0)
+	if (a < EPSILON)
 		return false; // ray is parallel
 
 	// find beta coordinate

@@ -26,11 +26,11 @@ int main()
     Esfera *e2 = new Esfera(0.6f, 0.6f, 0.3f, 3, Vec3(500 + d, 500, 500), 100, Cor(100, 0, 255));
 
     Plano *p1 = new Plano(0.5f, 0.5f, 0.1f, 1, Vec3(0, 0, -400), Vec3(0, 0, 1), Cor(200, 200, 100));
-    Plano *p2 = new Plano(0.5f, 0.5f, 0.1f, 2, Vec3(0, -400, 0), Vec3(0, 1, 1), Cor(255, 255, 255));
+    Plano *p2 = new Plano(0.5f, 0.5f, 0.1f, 2, Vec3(0, -400, 0), Vec3(0, 1, 1), Cor(255, 255, 0));
 
     Triangulo *t1 = new Triangulo(0.5f, 0.5f, 0.1f, 1,
                                   vector<Vec3>{Vec3(855, 350, -200), Vec3(1100, 600, 200), Vec3(550, 690, -130)},
-                                  Vec3(-0.49f, -0.58f, 0.66f), Cor(100));
+                                  Vec3(-0.49f, -0.58f, 0.66f), Cor(0, 255, 0));
 
     Forma *f1 = dynamic_cast<Forma *>(e1);
     Forma *f2 = dynamic_cast<Forma *>(e2);
