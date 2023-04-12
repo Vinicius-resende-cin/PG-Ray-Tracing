@@ -1,43 +1,6 @@
 #include "Intersecoes.hpp"
 using namespace std;
 
-// formatar::formatar() {}
-
-// formatar::~formatar() {}
-
-// void formatar::addForma(Forma *forma)
-// {
-// 	formas.push_back(forma);
-// }
-
-// bool formatar::intersecta(Intersecao &intersecao)
-// {
-// 	bool INTERSECTA = false;
-// 	for (vector<Forma *>::iterator iter = formas.begin();
-// 		 iter != formas.end();
-// 		 ++iter)
-// 	{
-// 		Forma *formaAtual = *iter;
-// 		if (formaAtual->intersecta(intersecao))
-// 			INTERSECTA = true;
-// 	}
-// 	return INTERSECTA;
-// }
-
-// bool formatar::INTERSECTA(const Ray &ray)
-// {
-// 	for (vector<Forma *>::iterator iter = formas.begin();
-// 		 iter != formas.end();
-// 		 ++iter)
-// 	{
-// 		Forma *formaAtual = *iter;
-// 		if (formaAtual->INTERSECTA(ray))
-// 			return true;
-// 	}
-
-// 	return false;
-// }
-
 Plano::Plano(float ka, float kd, float ks, float eta,
 			 const Vec3 &posicao, const Vec3 &normal,
 			 const Cor &cor) : Forma(ka, kd, ks, eta, cor),
@@ -75,8 +38,9 @@ bool Plano::INTERSECTA(const Ray &ray)
 	float prodEscDirNor = pr_esc(ray.direcao, normal);
 	if (prodEscDirNor == 0.0f)
 	{
-		return false;
+		return false; // raio paralelo
 	}
+
 	// acha o ponto de intersecao
 	float t = pr_esc(posicao - ray.origem, normal) / prodEscDirNor;
 	if (t <= rayTMin || t >= ray.tMax)
@@ -101,7 +65,7 @@ Esfera::~Esfera() {}
 
 bool Esfera::intersecta(Intersecao &intersecao)
 {
-	float t0, t1, t; // solutions for t if the ray intersects
+	float t0, t1; // solutions for t if the ray intersects
 
 	// analytic solution
 	Vec3 L = intersecao.ray.origem - centro;
@@ -130,9 +94,7 @@ bool Esfera::intersecta(Intersecao &intersecao)
 			return false; // both t0 and t1 are negative
 	}
 
-	t = t0;
-
-	intersecao.t = t;
+	intersecao.t = t0;
 	intersecao.pForma = this;
 	intersecao.cor = cor;
 	return true;
@@ -188,7 +150,7 @@ bool Triangulo::intersecta(Intersecao &intersecao)
 
 	float a = pr_esc(edge1, h);
 	if (a == 0)
-		return false; // ray is parallel
+		return false; // raio paralelo
 
 	// find beta coordinate
 
@@ -258,3 +220,5 @@ bool Triangulo::INTERSECTA(const Ray &ray)
 		return false;
 	}
 }
+
+Vec3 Triangulo::getNormal(Vec3 ponto) { return normal; };

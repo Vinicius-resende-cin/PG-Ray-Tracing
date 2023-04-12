@@ -32,8 +32,11 @@ Cor rayCasting(Cena cena, const Camera &cam, int telaPx, int telaPy, int px, int
         }
     }
 
-    Vec3 ponto_intersec = intersec.posicao();
-    return Phong(cena, obj, intersec.ray.origem, ponto_intersec);
+    if (intersec.intersectou())
+    {
+        Vec3 ponto_intersec = intersec.posicao();
+        return Phong(cena, intersec.pForma, intersec.ray.origem, ponto_intersec);
+    }
 
     return cena.cor;
 }

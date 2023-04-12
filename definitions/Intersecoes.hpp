@@ -25,22 +25,6 @@ public:
 	virtual Vec3 getNormal(Vec3 ponto) = 0;
 };
 
-// class formatar : public Forma
-// {
-// protected:
-// 	vector<Forma *> formas;
-
-// public:
-// 	formatar();
-
-// 	virtual ~formatar();
-
-// 	void addForma(Forma *forma);
-
-// 	virtual bool intersecta(Intersecao &intersecao);
-// 	virtual bool INTERSECTA(const Ray &ray);
-// };
-
 class Plano : public Forma
 {
 public:
@@ -92,6 +76,7 @@ public:
 
 	bool intersecta(Intersecao &intersecao);
 	bool INTERSECTA(const Ray &ray);
+	Vec3 getNormal(Vec3 ponto);
 };
 
 #endif
