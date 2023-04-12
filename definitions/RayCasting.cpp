@@ -6,10 +6,6 @@ Cor rayCasting(Cena cena, const Camera &cam, int telaPx, int telaPy, int px, int
     float coordX = ((float)px / (float)telaPx) * 2.0f - 1.0f;
     float coordY = ((float)py / (float)telaPy) * 2.0f - 1.0f;
 
-    // Calcula dimensões do pixel
-    float alturapixel = cam.altura * 2 / telaPy;
-    float largurapixel = cam.largura * 2 / telaPx;
-
     // Encontra o vetor que aponta para o centro da tela
     Vec3 centroTela = -(cam.W * cam.d);
 
@@ -22,19 +18,22 @@ Cor rayCasting(Cena cena, const Camera &cam, int telaPx, int telaPy, int px, int
 
     Ray raioPixelAtual = Ray(cam.posicao, pixelAtual);
     Intersecao intersec = Intersecao(raioPixelAtual);
+    Intersecao intersecAux = Intersecao(raioPixelAtual);
+    Forma *obj;
 
-    for (int i = 0; i < cena.esferas.size(); i++)
+    for (int i = 0; i < cena.formas.size(); i++)
     {
-        Esfera e = cena.esferas[i];
-        Intersecao intersecAux = Intersecao(raioPixelAtual);
-        bool intersecao = e.intersecta(intersecAux);
+        obj = cena.formas[i];
+        bool intersecao = obj->intersecta(intersecAux);
 
         if (intersecao && intersecAux.t < intersec.t && intersecAux.t > 1)
         {
             intersec = intersecAux;
-            Vec3 ponto_intersec = intersec.posicao();
-            return Phong(cena, e, intersec.ray.origem, ponto_intersec, e.ka, e.kd, e.ks, e.eta);
         }
     }
+
+    Vec3 ponto_intersec = intersec.posicao();
+    return Phong(cena, obj, intersec.ray.origem, ponto_intersec);
+
     return cena.cor;
 }

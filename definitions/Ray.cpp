@@ -43,7 +43,7 @@ Vec3 Ray::calcular(float t) const
 Intersecao::Intersecao()
 	: ray(),
 	  t(rayTMax),
-	  pForma(NULL)
+	  pForma(nullptr)
 {
 }
 
@@ -57,7 +57,7 @@ Intersecao::Intersecao(const Intersecao &i)
 Intersecao::Intersecao(const Ray &ray)
 	: ray(ray),
 	  t(ray.tMax),
-	  pForma(NULL)
+	  pForma(nullptr)
 {
 }
 
@@ -73,7 +73,7 @@ Intersecao &Intersecao::operator=(const Intersecao &i)
 
 bool Intersecao::intersectou() const
 {
-	return (pForma != NULL);
+	return (pForma != nullptr);
 }
 
 Vec3 Intersecao::posicao() const

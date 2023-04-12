@@ -19,16 +19,22 @@ Camera camera(camPos, camDir, vUp, d, Hy, Hx);
 int pixelsX = 1000;
 int pixelsY = 1000;
 
-Esfera esf(0.5f, 0.5f, 0.1f, 3, Vec3(1000 + d, 0, 0), 300, Cor(0, 255, 255));
-Esfera esf2(0.6f, 0.6f, 0.3f, 3, Vec3(500 + d, 500, 500), 100, Cor(100, 0, 255));
+// Forma *p1 = new Plano(0.5f, 0.5f, 0.1f, 1, Vec3(0, 0, 0), Vec3(0, 0, 1), Cor(0, 0, 0));
 
 int main()
 {
     // definição da cena
+    Esfera *esf = new Esfera(0.5f, 0.5f, 0.1f, 3, Vec3(1000 + d, 0, 0), 300, Cor(0, 255, 255));
+    Esfera *esf2 = new Esfera(0.6f, 0.6f, 0.3f, 3, Vec3(500 + d, 500, 500), 100, Cor(100, 0, 255));
+
+    Forma *f1 = dynamic_cast<Forma *>(esf);
+    Forma *f2 = dynamic_cast<Forma *>(esf2);
+
     cena.addLuz(Luz(Vec3(40, 400, 100), Cor(255, 255, 255)));
-    // cena.addLuz(Luz(Vec3(40, -400, 100), Cor(255, 255, 255)));
-    cena.addEsfera(esf);
-    cena.addEsfera(esf2);
+    cena.addLuz(Luz(Vec3(40, -400, 100), Cor(255, 255, 255)));
+    cena.addForma(f1);
+    cena.addForma(f2);
+    // cena.addPlano(p1);
 
     // Create a vector of RGBA pixels
     vector<unsigned char> image(pixelsX * pixelsY * 4);
@@ -38,7 +44,6 @@ int main()
         for (int x = 0; x < pixelsX; x++)
         {
             int index = (y * pixelsX + x) * 4;
-            // cout << y << ',' << x;
             Cor corPixel = rayCasting(cena, camera, pixelsX, pixelsY, x, y);
             image[index + 0] = corPixel.r; // R channel
             image[index + 1] = corPixel.g; // G channel

@@ -18,8 +18,7 @@ class Cena
 public:
     vector<Luz> luzes{};
     Cor cor;
-    vector<Esfera> esferas{};
-    // vector<Forma> obj;
+    vector<Forma *> formas{};
 
     Cena(Cor c)
     {
@@ -31,9 +30,9 @@ public:
         luzes.insert(luzes.end(), luz);
     };
 
-    void addEsfera(Esfera esf)
+    void addForma(Forma *obj)
     {
-        esferas.insert(esferas.end(), esf);
+        formas.insert(formas.end(), obj);
     }
 };
 

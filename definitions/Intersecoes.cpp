@@ -1,49 +1,48 @@
 #include "Intersecoes.hpp"
 using namespace std;
 
-formatar::formatar() {}
+// formatar::formatar() {}
 
-formatar::~formatar() {}
+// formatar::~formatar() {}
 
-void formatar::addForma(Forma *forma)
-{
-	formas.push_back(forma);
-}
+// void formatar::addForma(Forma *forma)
+// {
+// 	formas.push_back(forma);
+// }
 
-bool formatar::intersecta(Intersecao &intersecao)
-{
-	bool INTERSECTA = false;
-	for (vector<Forma *>::iterator iter = formas.begin();
-		 iter != formas.end();
-		 ++iter)
-	{
-		Forma *formaAtual = *iter;
-		if (formaAtual->intersecta(intersecao))
-			INTERSECTA = true;
-	}
-	return INTERSECTA;
-}
+// bool formatar::intersecta(Intersecao &intersecao)
+// {
+// 	bool INTERSECTA = false;
+// 	for (vector<Forma *>::iterator iter = formas.begin();
+// 		 iter != formas.end();
+// 		 ++iter)
+// 	{
+// 		Forma *formaAtual = *iter;
+// 		if (formaAtual->intersecta(intersecao))
+// 			INTERSECTA = true;
+// 	}
+// 	return INTERSECTA;
+// }
 
-bool formatar::INTERSECTA(const Ray &ray)
-{
-	for (vector<Forma *>::iterator iter = formas.begin();
-		 iter != formas.end();
-		 ++iter)
-	{
-		Forma *formaAtual = *iter;
-		if (formaAtual->INTERSECTA(ray))
-			return true;
-	}
+// bool formatar::INTERSECTA(const Ray &ray)
+// {
+// 	for (vector<Forma *>::iterator iter = formas.begin();
+// 		 iter != formas.end();
+// 		 ++iter)
+// 	{
+// 		Forma *formaAtual = *iter;
+// 		if (formaAtual->INTERSECTA(ray))
+// 			return true;
+// 	}
 
-	return false;
-}
+// 	return false;
+// }
 
 Plano::Plano(float ka, float kd, float ks, float eta,
 			 const Vec3 &posicao, const Vec3 &normal,
-			 const Cor &cor) : ka(ka), kd(kd), ks(ks), eta(eta),
+			 const Cor &cor) : Forma(ka, kd, ks, eta, cor),
 							   posicao(posicao),
-							   normal(normal),
-							   cor(cor)
+							   normal(normal.normalizar())
 {
 }
 
@@ -87,13 +86,14 @@ bool Plano::INTERSECTA(const Ray &ray)
 	return true;
 }
 
+Vec3 Plano::getNormal(Vec3 ponto) { return normal; };
+
 Esfera::Esfera(float ka, float kd, float ks, float eta,
 			   const Vec3 &centro, float raio,
 			   const Cor &cor)
-	: ka(ka), kd(kd), ks(ks), eta(eta),
+	: Forma(ka, kd, ks, eta, cor),
 	  centro(centro),
-	  raio(raio),
-	  cor(cor)
+	  raio(raio)
 {
 }
 
@@ -163,13 +163,14 @@ bool Esfera::INTERSECTA(const Ray &ray)
 	return false;
 }
 
+Vec3 Esfera::getNormal(Vec3 ponto) { return (ponto - centro).normalizar(); };
+
 Triangulo::Triangulo(float ka, float kd, float ks, float eta,
 					 const vector<Vec3> &vertices, const Vec3 &normal,
 					 const Cor &cor)
-	: ka(ka), kd(kd), ks(ks), eta(eta),
+	: Forma(ka, kd, ks, eta, cor),
 	  vertices(vertices),
-	  normal(normal),
-	  cor(cor)
+	  normal(normal)
 {
 }
 
