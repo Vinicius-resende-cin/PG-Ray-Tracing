@@ -72,13 +72,15 @@ bool Esfera::intersecta(Intersecao &intersecao)
 {
 	float t0, t1; // solutions for t if the ray intersects
 
-	// analytic solution
-	Vec3 L = intersecao.ray.origem - centro;
-	float a = intersecao.ray.direcao.comp2();
-	float b = 2 * pr_esc(intersecao.ray.direcao, L);
-	float c = L.comp2() - qdd(raio);
+	// transformacao pra considerar o centro da esfera na origem
+	Ray localRay = intersecao.ray;
+	localRay.origem -= centro;
+	// calcula coefcientes
+	float a = localRay.direcao.comp2();
+	float b = 2 * pr_esc(localRay.direcao, localRay.origem);
+	float c = localRay.origem.comp2() - qdd(raio);
 
-	float discr = b * b - 4 * a * c;
+	float discr = qdd(b) - 4 * a * c;
 	if (discr < 0)
 		return false;
 	else if (discr == 0)

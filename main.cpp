@@ -1,6 +1,8 @@
 #include "Renderer.cpp"
 #include "definitions/Transformacoes.cpp"
 
+#define PI 3.1415926535f
+
 using namespace std;
 
 // definição da câmera
@@ -20,8 +22,8 @@ Luz l1 = Luz(Vec3(800, 400, 100), Cor(0, 0, 255));
 Luz l2 = Luz(Vec3(500, -400, 100), Cor(255, 255, 255));
 
 // definição dos objetos
-Esfera *e1 = new Esfera(0.5f, 0.5f, 0.1f, 3, Vec3(1000 + d, 0, 0), 300, Cor(0, 255, 255));
-Esfera *e2 = new Esfera(0.6f, 0.6f, 0.3f, 3, Vec3(500 + d, 500, 500), 100, Cor(100, 0, 255));
+Esfera *e1 = new Esfera(0.5f, 0.5f, 0.1f, 3, Vec3(1100, 0, 0), 300, Cor(0, 255, 255));
+Esfera *e2 = new Esfera(0.6f, 0.6f, 0.3f, 3, Vec3(600, 500, 500), 100, Cor(100, 0, 255));
 
 Plano *p1 = new Plano(0.5f, 0.5f, 0.1f, 1, Vec3(0, 0, -400), Vec3(0, 0, 1), Cor(200, 200, 100));
 Plano *p2 = new Plano(0.5f, 0.5f, 0.1f, 2, Vec3(0, -400, 0), Vec3(0, 1, 1), Cor(255, 255, 0));
@@ -55,11 +57,35 @@ int main()
 
     render(pixelsX, pixelsY, cena, camera, "antes");
 
-    e1->centro = afimTransform(e1->centro,
-                               {{1, 0, 0, -100},
-                                {0, 1, 0, 200},
-                                {0, 0, 1, 200},
-                                {0, 0, 0, 1}});
+    // e1->centro = afimTransform(e1->centro,
+    //                            {{1, 0, 0, -100},
+    //                             {0, 1, 0, 200},
+    //                             {0, 0, 1, 200},
+    //                             {0, 0, 0, 1}});
+
+    // p1->normal = afimTransform(p1->normal,
+    //                            {{1, 0, 0, 0},
+    //                             {0, (float)cos(PI / 6), (float)-sin(PI / 6), 0},
+    //                             {0, (float)sin(PI / 6), (float)cos(PI / 6), 0},
+    //                             {0, 0, 0, 1}});
+
+    camera.W = afimTransform(camera.W,
+                             {{(float)cos(PI / 6), 0, (float)sin(PI / 6), 0},
+                              {0, 1, 0, 0},
+                              {(float)-sin(PI / 6), 0, (float)cos(PI / 6), 0},
+                              {0, 0, 0, 1}});
+
+    camera.posicao = afimTransform(camera.posicao,
+                                   {{1, 0, 0, 0},
+                                    {0, 1, 0, 500},
+                                    {0, 0, 1, 500},
+                                    {0, 0, 0, 1}});
+
+    camera.W = afimTransform(camera.W,
+                             {{(float)cos(PI / 6), (float)sin(PI / 6), 0, 0},
+                              {(float)-sin(PI / 6), (float)cos(PI / 6), 0, 0},
+                              {0, 0, 1, 0},
+                              {0, 0, 0, 1}});
 
     render(pixelsX, pixelsY, cena, camera, "depois");
 
