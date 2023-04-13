@@ -69,19 +69,46 @@ int main()
     //                             {0, (float)sin(PI / 6), (float)cos(PI / 6), 0},
     //                             {0, 0, 0, 1}});
 
-    camera.W = afimTransform(camera.W,
-                             {{(float)cos(PI / 6), 0, (float)sin(PI / 6), 0},
-                              {0, 1, 0, 0},
-                              {(float)-sin(PI / 6), 0, (float)cos(PI / 6), 0},
-                              {0, 0, 0, 1}});
-
+    // mover a camera
     camera.posicao = afimTransform(camera.posicao,
                                    {{1, 0, 0, 0},
                                     {0, 1, 0, 500},
                                     {0, 0, 1, 500},
                                     {0, 0, 0, 1}});
 
+    // rotaciona a camera
     camera.W = afimTransform(camera.W,
+                             {{(float)cos(PI / 6), 0, (float)sin(PI / 6), 0},
+                              {0, 1, 0, 0},
+                              {(float)-sin(PI / 6), 0, (float)cos(PI / 6), 0},
+                              {0, 0, 0, 1}});
+
+    camera.U = afimTransform(camera.U,
+                             {{(float)cos(PI / 6), 0, (float)sin(PI / 6), 0},
+                              {0, 1, 0, 0},
+                              {(float)-sin(PI / 6), 0, (float)cos(PI / 6), 0},
+                              {0, 0, 0, 1}});
+
+    camera.V = afimTransform(camera.V,
+                             {{(float)cos(PI / 6), 0, (float)sin(PI / 6), 0},
+                              {0, 1, 0, 0},
+                              {(float)-sin(PI / 6), 0, (float)cos(PI / 6), 0},
+                              {0, 0, 0, 1}});
+
+    // rotaciona a camera
+    camera.W = afimTransform(camera.W,
+                             {{(float)cos(PI / 6), (float)sin(PI / 6), 0, 0},
+                              {(float)-sin(PI / 6), (float)cos(PI / 6), 0, 0},
+                              {0, 0, 1, 0},
+                              {0, 0, 0, 1}});
+
+    camera.U = afimTransform(camera.U,
+                             {{(float)cos(PI / 6), (float)sin(PI / 6), 0, 0},
+                              {(float)-sin(PI / 6), (float)cos(PI / 6), 0, 0},
+                              {0, 0, 1, 0},
+                              {0, 0, 0, 1}});
+
+    camera.V = afimTransform(camera.V,
                              {{(float)cos(PI / 6), (float)sin(PI / 6), 0, 0},
                               {(float)-sin(PI / 6), (float)cos(PI / 6), 0, 0},
                               {0, 0, 1, 0},
