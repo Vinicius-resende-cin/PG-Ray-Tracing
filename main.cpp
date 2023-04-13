@@ -1,8 +1,5 @@
-#include <iostream>
-#include <vector>
-#include "lodepng.cpp"
-
-#include "definitions/RayCasting.cpp"
+#include "Renderer.cpp"
+#include "definitions/Transformacoes.cpp"
 
 using namespace std;
 
@@ -56,30 +53,15 @@ int main()
     cena.addForma(f4);
     cena.addForma(f5);
 
-    // Create a vector of RGBA pixels
-    vector<unsigned char> image(pixelsX * pixelsY * 4);
+    render(pixelsX, pixelsY, cena, camera, "antes");
 
-    for (int y = 0; y < pixelsY; y++)
-    {
-        for (int x = 0; x < pixelsX; x++)
-        {
-            int index = (y * pixelsX + x) * 4;
-            Cor corPixel = rayCasting(cena, camera, pixelsX, pixelsY, x, y);
-            image[index + 0] = corPixel.r; // R channel
-            image[index + 1] = corPixel.g; // G channel
-            image[index + 2] = corPixel.b; // B channel
-            image[index + 3] = 255;        // Alpha channel
-        }
-    }
+    e1->centro = afimTransform(e1->centro,
+                               {{1, 0, 0, -100},
+                                {0, 1, 0, 200},
+                                {0, 0, 1, 200},
+                                {0, 0, 0, 1}});
 
-    // Save the image as a PNG file
-    unsigned error = lodepng::encode("image.png", image, pixelsX, pixelsY);
-    if (error)
-    {
-        cout << "PNG encoder error: " << lodepng_error_text(error) << endl;
-        return 1;
-    }
+    render(pixelsX, pixelsY, cena, camera, "depois");
 
-    cout << "Image saved to 'image.png'" << endl;
     return 0;
 }

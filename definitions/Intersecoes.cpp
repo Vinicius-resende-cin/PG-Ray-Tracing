@@ -1,3 +1,6 @@
+#ifndef _INTERSECOES_
+#define _INTERSECOES_
+
 #include "Intersecoes.hpp"
 using namespace std;
 
@@ -228,3 +231,5 @@ bool Triangulo::INTERSECTA(const Ray &ray)
 }
 
 Vec3 Triangulo::getNormal(Vec3 ponto) { return normal; };
+
+#endif //_INTERSECOES_
