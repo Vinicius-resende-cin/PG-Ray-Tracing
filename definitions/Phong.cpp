@@ -1,3 +1,6 @@
+#ifndef _PHONG_
+#define _PHONG_
+
 #include <iostream>
 
 #include "Cena.cpp"
@@ -52,3 +55,5 @@ Cor Phong(Cena cena, Forma *obj, Vec3 cameraposicao, Vec3 p_intersec)
 
     return I;
 }
+
+#endif

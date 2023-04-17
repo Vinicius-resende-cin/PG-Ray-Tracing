@@ -1,3 +1,6 @@
+#ifndef _VETOR_
+#define _VETOR_
+
 #include <iostream>
 #include <stdio.h>
 
@@ -89,3 +92,5 @@ Vec3 Vec3::operator-() const
 {
 	return Vec3(-x, -y, -z);
 }
+
+#endif

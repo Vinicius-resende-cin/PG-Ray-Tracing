@@ -1,3 +1,6 @@
+#ifndef _RAY_
+#define _RAY_
+
 #include <iostream>
 
 #include "Ray.hpp"
@@ -80,3 +83,5 @@ Vec3 Intersecao::posicao() const
 {
 	return ray.calcular(t);
 }
+
+#endif

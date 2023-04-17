@@ -1,3 +1,6 @@
+#ifndef _COR_
+#define _COR_
+
 #include "Cor.hpp"
 
 #include <cmath>
@@ -63,3 +66,5 @@ Cor &Cor::operator*=(float f)
 	b *= f;
 	return *this;
 }
+
+#endif

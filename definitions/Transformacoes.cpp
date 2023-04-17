@@ -1,3 +1,6 @@
+#ifndef _TRANSFORMACOES_
+#define _TRANSFORMACOES_
+
 #include <vector>
 #include <iostream>
 #include "Intersecoes.cpp"
@@ -37,3 +40,5 @@ Vec3 afimTransform(Vec3 vec, vector<vector<float>> transf)
     Vec3 result = Vec3(resultMat[0][0], resultMat[1][0], resultMat[2][0]); // converte para 3 dimensões
     return result;
 }
+
+#endif

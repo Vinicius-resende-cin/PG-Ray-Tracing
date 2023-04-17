@@ -1,6 +1,9 @@
+#ifndef _CASTRAY_
+#define _CASTRAY_
+
 #include "Phong.cpp"
 
-Cor rayCasting(Cena cena, const Camera &cam, int telaPx, int telaPy, int px, int py)
+Cor castRay(Cena cena, const Camera &cam, int telaPx, int telaPy, int px, int py)
 {
     // mapeia as coordenadas do pixel entre -1 e 1
     float coordX = ((float)px / (float)telaPx) * 2.0f - 1.0f;
@@ -40,3 +43,5 @@ Cor rayCasting(Cena cena, const Camera &cam, int telaPx, int telaPy, int px, int
 
     return cena.cor;
 }
+
+#endif
