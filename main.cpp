@@ -5,7 +5,7 @@
 using namespace std;
 
 // definição da câmera
-float d = 100.0f;
+float d = 1000.0f;
 int Hy = d;
 int Hx = d;
 Vec3 camPos(0, 0, 0);
@@ -21,11 +21,11 @@ Luz l1 = Luz(Vec3(800, 400, 100), Cor(0, 0, 255));
 Luz l2 = Luz(Vec3(500, -400, 100), Cor(255, 255, 255));
 
 // definição dos objetos
-Esfera *e1 = new Esfera(0.5f, 0.5f, 0.1f, 0.6f, 3, Vec3(1100, 0, 0), 300, Cor(0, 255, 255));
+Esfera *e1 = new Esfera(0.5f, 0.5f, 0.0f, 0.6f, 3, Vec3(1100, 0, 0), 300, Cor(0, 255, 255));
 Esfera *e2 = new Esfera(0.6f, 0.6f, 0.3f, 0, 3, Vec3(600, 500, 500), 100, Cor(100, 0, 255));
 
 Plano *p1 = new Plano(0.5f, 0.5f, 0.1f, 0.3f, 1, Vec3(0, 0, -400), Vec3(0, 0, 1), Cor(200, 200, 100));
-Plano *p2 = new Plano(0.5f, 0.5f, 0.1f, 0, 2, Vec3(1100, -400, 0), Vec3(0, 1, 1), Cor(255, 255, 0));
+Plano *p2 = new Plano(0.5f, 0.5f, 0.1f, 0.3f, 2, Vec3(1100, -400, 0), Vec3(0, 1, 1), Cor(255, 255, 0));
 
 Triangulo *t1 = new Triangulo(0.5f, 0.5f, 0.1f, 0.1f, 1,
                               vector<Vec3>{
@@ -59,10 +59,10 @@ int main()
     // e1->translate(-100, 200, 200);
 
     // p1->rotate(Vec3(1, 0, 0), PI / 6);
-    // p2->rotate(Vec3(1, 0, 1), PI / 6);
+    p2->rotate(Vec3(1, 0, 1), PI / 6);
 
-    // t1->translate(0, 0, 200);
-    t1->rotate(Vec3(0, 0, 1), PI / 3);
+    t1->translate(0, 0, 200);
+    t1->rotate(Vec3(0.5f, -1, 1), PI / 3);
 
     // camera.translate(0, 450, 500);
     // camera.rotate(Vec3(0, -1, 1), -PI / 6);

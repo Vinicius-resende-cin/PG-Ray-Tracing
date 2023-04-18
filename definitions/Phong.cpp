@@ -4,12 +4,46 @@
 #include <iostream>
 
 #include "Cena.cpp"
+#include "RayCasting.cpp"
 #include <cmath>
 
 using namespace std;
 
-// Função do modelo de iluminação de Phong
+float verifyRay(Luz l, const Ray &raio)
+{
+    Vec3 toPoint = l.posicao - raio.origem;
 
+    if (pr_esc(toPoint.normalizar(), raio.direcao.normalizar()) != 1)
+        return rayTMax;
+
+    float t = toPoint.comp();
+
+    if (t > EPSILON)
+        return t;
+
+    return rayTMax;
+}
+
+float verifyRay(Cena cena, const Ray &raio)
+{
+    Intersecao intersecAux = Intersecao(raio);
+    Forma *obj;
+
+    for (int i = 0; i < cena.formas.size(); i++)
+    {
+        obj = cena.formas[i];
+        bool intersecao = obj->intersecta(intersecAux);
+
+        if (intersecao && intersecAux.t < rayTMax && intersecAux.t > EPSILON)
+        {
+            return intersecAux.t;
+        }
+    }
+
+    return rayTMax;
+}
+
+// Função do modelo de iluminação de Phong
 Cor Phong(Cena cena, Forma *obj, Vec3 cameraposicao, Vec3 p_intersec)
 {
     // Vetor normalizado do ponto do objeto até a posição da câmera
@@ -29,6 +63,14 @@ Cor Phong(Cena cena, Forma *obj, Vec3 cameraposicao, Vec3 p_intersec)
         // Vetor normalizado que chega da luz
         Vec3 lightDir = cena.luzes[i].posicao - p_intersec;
         lightDir = lightDir.normalizar();
+
+        // projeta sombras
+        // Ray lightRay = Ray(p_intersec, lightDir);
+        // float lightDist = verifyRay(cena.luzes[i], lightRay);
+        // float closestObj = verifyRay(cena, lightRay);
+
+        // if (closestObj < lightDist) // luz obstruída
+        //     continue;
 
         // Vetor normal do objeto
         Vec3 normal = obj->getNormal(p_intersec);

@@ -13,7 +13,7 @@ void castRay(Cena cena, Intersecao &intersec)
         obj = cena.formas[i];
         bool intersecao = obj->intersecta(intersecAux);
 
-        if (intersecao && intersecAux.t < intersec.t && intersecAux.t > 1)
+        if (intersecao && intersecAux.t < intersec.t && intersec.t > EPSILON)
         {
             intersec = intersecAux;
         }

@@ -6,7 +6,7 @@
 
 using namespace std;
 
-#define EPSILON 0.000001f
+#define EPSILON 0.0001f
 
 vector<vector<float>> I = {{1, 0, 0, 0},
 						   {0, 1, 0, 0},
