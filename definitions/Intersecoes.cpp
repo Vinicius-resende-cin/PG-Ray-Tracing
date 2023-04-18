@@ -40,7 +40,6 @@ bool Plano::intersecta(Intersecao &intersecao)
 	}
 	intersecao.t = t;
 	intersecao.pForma = this;
-	intersecao.cor = cor;
 	return true;
 }
 
@@ -138,7 +137,6 @@ bool Esfera::intersecta(Intersecao &intersecao)
 
 	intersecao.t = t0;
 	intersecao.pForma = this;
-	intersecao.cor = cor;
 	return true;
 }
 
@@ -247,7 +245,6 @@ bool Triangulo::intersecta(Intersecao &intersecao)
 	{
 		intersecao.t = _t;
 		intersecao.pForma = this;
-		intersecao.cor = cor;
 		return true;
 	}
 	else // line intersection

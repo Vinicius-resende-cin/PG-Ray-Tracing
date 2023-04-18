@@ -3,7 +3,7 @@
 
 #include "RayCasting.cpp"
 
-Cor traceRay(Cena cena, const Camera &cam, int telaPx, int telaPy, int px, int py)
+Cor traceRay(Cena cena, const Camera &cam, int telaPx, int telaPy, int px, int py, int bounces)
 {
     // mapeia as coordenadas do pixel entre -1 e 1
     float coordX = ((float)px / (float)telaPx) * 2.0f - 1.0f;
@@ -21,16 +21,22 @@ Cor traceRay(Cena cena, const Camera &cam, int telaPx, int telaPy, int px, int p
 
     Ray raioPixelAtual = Ray(cam.posicao, pixelAtual);
 
-    Intersecao intersec = castRay(cena, cam, raioPixelAtual, telaPx, telaPy, px, py);
+    Intersecao intersec = Intersecao(raioPixelAtual);
 
-    if (intersec.intersectou())
+    for (int i = 0; i < bounces; i++)
     {
-        Vec3 ponto_intersec = intersec.posicao();
-        intersec.cor = Phong(cena, intersec.pForma, intersec.ray.origem, ponto_intersec);
-    }
-    else
-    {
-        intersec.cor = cena.cor;
+        Intersecao auxIntersec = castRay(cena, intersec.ray);
+
+        if (auxIntersec.intersectou())
+        {
+            Vec3 ponto_intersec = auxIntersec.posicao();
+            intersec.cor += Phong(cena, auxIntersec.pForma, auxIntersec.ray.origem, ponto_intersec) * (1 / i);
+            intersec.cor.clamp(0, 255);
+
+            // bounce ray
+            intersec.ray.origem = ponto_intersec + intersec.pForma->getNormal(ponto_intersec) * EPSILON;      // evita colisão com si próprio
+            intersec.ray.direcao = intersec.ray.direcao.refletir(intersec.pForma->getNormal(ponto_intersec)); // reflete a direcao do raio
+        }
     }
 
     return intersec.cor;

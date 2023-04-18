@@ -18,7 +18,7 @@ void render(int pixelsX, int pixelsY, Cena cena, Camera camera, string imageName
         for (int x = 0; x < pixelsX; x++)
         {
             int index = (y * pixelsX + x) * 4;
-            Cor corPixel = traceRay(cena, camera, pixelsX, pixelsY, x, y);
+            Cor corPixel = traceRay(cena, camera, pixelsX, pixelsY, x, y, 5);
             image[index + 0] = corPixel.r; // R channel
             image[index + 1] = corPixel.g; // G channel
             image[index + 2] = corPixel.b; // B channel

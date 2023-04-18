@@ -3,7 +3,7 @@
 
 #include "Phong.cpp"
 
-Intersecao castRay(Cena cena, const Camera &cam, const Ray &raioAtual, int telaPx, int telaPy, int px, int py)
+Intersecao castRay(Cena cena, const Ray &raioAtual)
 {
     Intersecao intersec = Intersecao(raioAtual);
     Intersecao intersecAux = Intersecao(raioAtual);

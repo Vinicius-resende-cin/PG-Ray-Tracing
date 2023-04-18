@@ -39,6 +39,12 @@ Vec3 Vec3::normalizar() const
 	return Vec3(x / mag, y / mag, z / mag);
 }
 
+Vec3 Vec3::refletir(const Vec3 &normal) const
+{
+	// retorna uma vetor com a direção do raio refletida sobre a normal fornecida
+	return neg() - (normal * pr_esc(neg(), normal)) * 2;
+}
+
 Vec3 Vec3::neg() const
 {
 	return Vec3(-x, -y, -z);

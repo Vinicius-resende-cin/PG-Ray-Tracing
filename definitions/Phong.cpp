@@ -34,7 +34,7 @@ Cor Phong(Cena cena, Forma *obj, Vec3 cameraposicao, Vec3 p_intersec)
         Vec3 normal = obj->getNormal(p_intersec);
 
         // Reflexão da luz no objeto
-        Vec3 reflectDir = -lightDir - (normal * pr_esc(-lightDir, normal)) * 2;
+        Vec3 reflectDir = -(lightDir - normal * pr_esc(-lightDir, normal) * 2);
         reflectDir = reflectDir.normalizar();
 
         // Intensidade da luz difusa

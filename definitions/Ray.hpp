@@ -26,6 +26,7 @@ struct Ray
 	Ray &operator=(const Ray &r);
 
 	Vec3 calcular(float t) const;
+	Vec3 refletir(const Vec3 &normal) const;
 };
 
 class Forma;
@@ -35,7 +36,7 @@ struct Intersecao
 	Ray ray;
 	float t;
 	Forma *pForma;
-	Cor cor;
+	Cor cor = Cor(0, 0, 0);
 
 	Intersecao();
 	Intersecao(const Intersecao &i);
