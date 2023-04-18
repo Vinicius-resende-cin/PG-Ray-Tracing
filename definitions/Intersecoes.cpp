@@ -206,8 +206,7 @@ Triangulo::Triangulo(float ka, float kd, float ks, float eta,
 	: Forma(ka, kd, ks, eta, cor),
 	  vertices(vertices)
 {
-	baricentro = vertices[0] * 1 / 3 + vertices[1] * 1 / 3 + vertices[2] * 1 / 3;
-	normal = calculateNormal();
+	calculatePosition();
 }
 
 Triangulo::~Triangulo() {}
@@ -297,11 +296,15 @@ bool Triangulo::INTERSECTA(const Ray &ray)
 		return false;
 }
 
-Vec3 Triangulo::calculateNormal()
+void Triangulo::calculatePosition()
 {
+	// calcula o baricentro atual
+	baricentro = vertices[0] * 1 / 3 + vertices[1] * 1 / 3 + vertices[2] * 1 / 3;
+
+	// calcula a normal atual
 	Vec3 edge1 = vertices[1] - vertices[0];
 	Vec3 edge2 = vertices[2] - vertices[0];
-	return pr_vet(edge1, edge2).normalizar();
+	normal = pr_vet(edge1, edge2).normalizar();
 };
 
 Vec3 Triangulo::getNormal(Vec3 ponto) { return normal; };
@@ -312,6 +315,7 @@ void Triangulo::transform(vector<vector<float>> t)
 	{
 		vertices[i] = afimTransform(vertices[i], t);
 	}
+	calculatePosition();
 };
 
 void Triangulo::translate(float x, float y, float z)
@@ -320,6 +324,7 @@ void Triangulo::translate(float x, float y, float z)
 	{
 		vertices[i] += Vec3(x, y, z);
 	}
+	calculatePosition();
 };
 
 void Triangulo::rotate(Vec3 axis, float radAngle)
@@ -341,7 +346,7 @@ void Triangulo::rotate(Vec3 axis, float radAngle)
 		vertices[i] += baricentro;					 // desfaz a translação
 	}
 
-	normal = calculateNormal();
+	calculatePosition();
 };
 
 void Triangulo::scale(float x, float y, float z){};

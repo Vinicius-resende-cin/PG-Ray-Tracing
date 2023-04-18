@@ -86,7 +86,7 @@ public:
 	Vec3 baricentro;
 
 private:
-	Vec3 calculateNormal();
+	void calculatePosition();
 
 public:
 	Triangulo(float ka, float kd, float ks, float eta,
