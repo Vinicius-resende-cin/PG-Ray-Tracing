@@ -17,12 +17,20 @@ struct Camera
     float altura;
     float largura;
 
-    Camera();
+private:
+    void calculateBase();
+
+public:
     Camera(const Vec3 &C, const Vec3 &M,
            const Vec3 &Vup,
            float d, float altura, float largura);
 
     virtual ~Camera();
+
+    void transform(vector<vector<float>> t);
+    void translate(float x, float y, float z);
+    void rotate(Vec3 axis, float radAngle);
+    void scale(float x, float y, float z);
 };
 
 #endif

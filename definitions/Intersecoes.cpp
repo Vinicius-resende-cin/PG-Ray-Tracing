@@ -8,6 +8,11 @@ using namespace std;
 
 #define EPSILON 0.000001f
 
+vector<vector<float>> I = {{1, 0, 0, 0},
+						   {0, 1, 0, 0},
+						   {0, 0, 1, 0},
+						   {0, 0, 0, 1}};
+
 Plano::Plano(float ka, float kd, float ks, float eta,
 			 const Vec3 &posicao, const Vec3 &normal,
 			 const Cor &cor) : Forma(ka, kd, ks, eta, cor),
@@ -76,16 +81,10 @@ void Plano::rotate(Vec3 axis, float radAngle)
 {
 	Vec3 normalAxis = axis.normalizar();
 
-	Vec3 axisToZ = Vec3(0, 0, 1) - normalAxis;
-	normal += axisToZ; // rotaciona eixo p/ eixo z
-
-	vector<vector<float>> t = {{(float)cos(radAngle), (float)-sin(radAngle), 0, 0},
-							   {(float)sin(radAngle), (float)cos(radAngle), 0, 0},
-							   {0, 0, 1, 0},
-							   {0, 0, 0, 1}};
-	normal = afimTransform(normal, t); // aplica rotação passada no eixo z
-
-	normal -= axisToZ; // desfaz rotação do eixo
+	// Rodrigues rotation
+	normal = normalAxis * pr_esc(normalAxis, normal) +
+			 (float)cos(radAngle) * pr_vet(pr_vet(normalAxis, normal), normalAxis) +
+			 (float)sin(radAngle) * pr_vet(normalAxis, normal);
 };
 
 void Plano::applyColor(Cor c)
@@ -330,20 +329,15 @@ void Triangulo::translate(float x, float y, float z)
 void Triangulo::rotate(Vec3 axis, float radAngle)
 {
 	Vec3 normalAxis = axis.normalizar();
-	Vec3 axisToZ = Vec3(0, 0, 1) - normalAxis;
-
-	vector<vector<float>> t = {{(float)cos(radAngle), (float)-sin(radAngle), 0, 0},
-							   {(float)sin(radAngle), (float)cos(radAngle), 0, 0},
-							   {0, 0, 1, 0},
-							   {0, 0, 0, 1}};
 
 	for (int i = 0; i < 3; i++)
 	{
-		vertices[i] -= baricentro;					 // move o centro para a origem
-		vertices[i] += axisToZ;						 // rotaciona o eixo p/ o eixo z
-		vertices[i] = afimTransform(vertices[i], t); // aplica a rotação
-		vertices[i] -= axisToZ;						 // desfaz a rotação do eixo
-		vertices[i] += baricentro;					 // desfaz a translação
+		vertices[i] -= baricentro; // move o triangulo para a origem
+		// Rodrigues rotation
+		vertices[i] = normalAxis * pr_esc(normalAxis, vertices[i]) +
+					  (float)cos(radAngle) * pr_vet(pr_vet(normalAxis, vertices[i]), normalAxis) +
+					  (float)sin(radAngle) * pr_vet(normalAxis, vertices[i]);
+		vertices[i] += baricentro; // move o triangulo de volta para a posicao original
 	}
 
 	calculatePosition();

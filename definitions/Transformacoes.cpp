@@ -7,6 +7,51 @@
 
 using namespace std;
 
+// funcao para multiplicar uma matriz po um escalar
+vector<vector<float>> matrizEscalar(vector<vector<float>> mat, float n)
+{
+    int rows = mat.size();
+    int cols = mat[0].size();
+
+    vector<vector<float>> result = mat;
+
+    for (int i = 0; i < rows; i++)
+    {
+        for (int j = 0; j < cols; j++)
+        {
+            result[i][j] *= n;
+        }
+    }
+
+    return result;
+}
+
+// Função para somar duas matrizes de floats
+vector<vector<float>> matrizSum(vector<vector<float>> mat1, vector<vector<float>> mat2)
+{
+    // cria uma matriz resultado do tamanho correto
+    int rows1 = mat1.size();
+    int cols1 = mat1[0].size();
+    int rows2 = mat2.size();
+    int cols2 = mat2[0].size();
+
+    vector<vector<float>> result(rows1, vector<float>(cols2, 0));
+
+    if (rows1 != rows2 || cols1 != cols2)
+        return result;
+
+    // soma as matrizes
+    for (int i = 0; i < rows1; i++)
+    {
+        for (int j = 0; j < cols1; j++)
+        {
+            result[i][j] += mat1[i][j] + mat2[i][j];
+        }
+    }
+
+    return result;
+}
+
 // Função para multiplicar duas matrizes de floats
 vector<vector<float>> matrizMult(vector<vector<float>> mat1, vector<vector<float>> mat2)
 {
