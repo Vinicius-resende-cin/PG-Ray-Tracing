@@ -295,10 +295,15 @@ bool Triangulo::INTERSECTA(const Ray &ray)
 		return false;
 }
 
-void Triangulo::calculatePosition()
+Vec3 Triangulo::calculateBaricentro()
 {
 	// calcula o baricentro atual
-	baricentro = vertices[0] * 1 / 3 + vertices[1] * 1 / 3 + vertices[2] * 1 / 3;
+	return vertices[0] * 1 / 3 + vertices[1] * 1 / 3 + vertices[2] * 1 / 3;
+};
+
+void Triangulo::calculatePosition()
+{
+	baricentro = calculateBaricentro();
 
 	// calcula a normal atual
 	Vec3 edge1 = vertices[1] - vertices[0];
@@ -338,6 +343,23 @@ void Triangulo::rotate(Vec3 axis, float radAngle)
 					  (float)cos(radAngle) * pr_vet(pr_vet(normalAxis, vertices[i]), normalAxis) +
 					  (float)sin(radAngle) * pr_vet(normalAxis, vertices[i]);
 		vertices[i] += baricentro; // move o triangulo de volta para a posicao original
+	}
+
+	calculatePosition();
+};
+
+void Triangulo::rotate(Vec3 axis, float radAngle, Vec3 centro)
+{
+	Vec3 normalAxis = axis.normalizar();
+
+	for (int i = 0; i < 3; i++)
+	{
+		vertices[i] -= centro; // move o triangulo para a origem
+		// Rodrigues rotation
+		vertices[i] = normalAxis * pr_esc(normalAxis, vertices[i]) +
+					  (float)cos(radAngle) * pr_vet(pr_vet(normalAxis, vertices[i]), normalAxis) +
+					  (float)sin(radAngle) * pr_vet(normalAxis, vertices[i]);
+		vertices[i] += centro; // move o triangulo de volta para a posicao original
 	}
 
 	calculatePosition();

@@ -86,6 +86,7 @@ public:
 	Vec3 baricentro;
 
 private:
+	Vec3 calculateBaricentro();
 	void calculatePosition();
 
 public:
@@ -103,6 +104,7 @@ public:
 	void transform(vector<vector<float>> t);
 	void translate(float x, float y, float z);
 	void rotate(Vec3 axis, float radAngle);
+	void rotate(Vec3 axis, float radAngle, Vec3 centro);
 	void scale(float x, float y, float z);
 
 	void applyColor(Cor c);
@@ -112,14 +114,17 @@ public:
 // {
 // public:
 // 	vector<Vec3> vertices;
-// 	vector<int> triangleVertices;
+// 	vector<vector<int>> triangleVertices;
 // 	vector<Triangulo *> triangulos;
 // 	Vec3 centroide;
 
 // public:
-// 	TriangleMesh(vector<Vec3> v);
+// 	TriangleMesh(vector<Vec3> v, vector<vector<int>> ts);
 
 // 	~TriangleMesh();
+
+// 	void addVertice(Vec3 v);
+// 	void addTriangle(int v1, int v2, int v3);
 
 // 	bool intersecta(Intersecao &intersecao);
 // 	bool INTERSECTA(const Ray &ray);
@@ -131,9 +136,6 @@ public:
 // 	void translate(float x, float y, float z);
 // 	void rotate(Vec3 axis, float angle);
 // 	void scale(float x, float y, float z);
-
-// 	void addVertice(Vec3 v);
-// 	void addTriangle(int v1, int v2, int v3);
 
 // 	void applyColor(Cor c);
 // };
