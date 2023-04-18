@@ -1,5 +1,4 @@
 #include "Renderer.cpp"
-#include "definitions/Transformacoes.cpp"
 
 #define PI 3.1415926535f
 
@@ -26,14 +25,14 @@ Esfera *e1 = new Esfera(0.5f, 0.5f, 0.1f, 3, Vec3(1100, 0, 0), 300, Cor(0, 255, 
 Esfera *e2 = new Esfera(0.6f, 0.6f, 0.3f, 3, Vec3(600, 500, 500), 100, Cor(100, 0, 255));
 
 Plano *p1 = new Plano(0.5f, 0.5f, 0.1f, 1, Vec3(0, 0, -400), Vec3(0, 0, 1), Cor(200, 200, 100));
-Plano *p2 = new Plano(0.5f, 0.5f, 0.1f, 2, Vec3(0, -400, 0), Vec3(0, 1, 1), Cor(255, 255, 0));
+Plano *p2 = new Plano(0.5f, 0.5f, 0.1f, 2, Vec3(1100, -400, 0), Vec3(0, 1, 1), Cor(255, 255, 0));
 
 Triangulo *t1 = new Triangulo(0.5f, 0.5f, 0.1f, 1,
                               vector<Vec3>{
                                   Vec3(855, 350, -200),
                                   Vec3(1100, 600, 200),
                                   Vec3(550, 690, -130)},
-                              Vec3(-0.49f, -0.58f, 0.66f), Cor(0, 255, 0));
+                              Cor(0, 255, 0));
 
 Forma *f1 = dynamic_cast<Forma *>(e1);
 Forma *f2 = dynamic_cast<Forma *>(e2);
@@ -55,64 +54,60 @@ int main()
     cena.addForma(f4);
     cena.addForma(f5);
 
+    // mover a camera
+    // camera.posicao = afimTransform(camera.posicao,
+    //                                {{1, 0, 0, 0},
+    //                                 {0, 1, 0, 500},
+    //                                 {0, 0, 1, 500},
+    //                                 {0, 0, 0, 1}});
+
+    // rotaciona a camera
+    // camera.W = afimTransform(camera.W,
+    //                          {{(float)cos(PI / 6), 0, (float)sin(PI / 6), 0},
+    //                           {0, 1, 0, 0},
+    //                           {(float)-sin(PI / 6), 0, (float)cos(PI / 6), 0},
+    //                           {0, 0, 0, 1}});
+
+    // camera.U = afimTransform(camera.U,
+    //                          {{(float)cos(PI / 6), 0, (float)sin(PI / 6), 0},
+    //                           {0, 1, 0, 0},
+    //                           {(float)-sin(PI / 6), 0, (float)cos(PI / 6), 0},
+    //                           {0, 0, 0, 1}});
+
+    // camera.V = afimTransform(camera.V,
+    //                          {{(float)cos(PI / 6), 0, (float)sin(PI / 6), 0},
+    //                           {0, 1, 0, 0},
+    //                           {(float)-sin(PI / 6), 0, (float)cos(PI / 6), 0},
+    //                           {0, 0, 0, 1}});
+
+    // rotaciona a camera
+    // camera.W = afimTransform(camera.W,
+    //                          {{(float)cos(PI / 6), (float)sin(PI / 6), 0, 0},
+    //                           {(float)-sin(PI / 6), (float)cos(PI / 6), 0, 0},
+    //                           {0, 0, 1, 0},
+    //                           {0, 0, 0, 1}});
+
+    // camera.U = afimTransform(camera.U,
+    //                          {{(float)cos(PI / 6), (float)sin(PI / 6), 0, 0},
+    //                           {(float)-sin(PI / 6), (float)cos(PI / 6), 0, 0},
+    //                           {0, 0, 1, 0},
+    //                           {0, 0, 0, 1}});
+
+    // camera.V = afimTransform(camera.V,
+    //                          {{(float)cos(PI / 6), (float)sin(PI / 6), 0, 0},
+    //                           {(float)-sin(PI / 6), (float)cos(PI / 6), 0, 0},
+    //                           {0, 0, 1, 0},
+    //                           {0, 0, 0, 1}});
+
     render(pixelsX, pixelsY, cena, camera, "antes");
 
-    // e1->centro = afimTransform(e1->centro,
-    //                            {{1, 0, 0, -100},
-    //                             {0, 1, 0, 200},
-    //                             {0, 0, 1, 200},
-    //                             {0, 0, 0, 1}});
+    e1->translate(-100, 200, 200);
 
-    // p1->normal = afimTransform(p1->normal,
-    //                            {{1, 0, 0, 0},
-    //                             {0, (float)cos(PI / 6), (float)-sin(PI / 6), 0},
-    //                             {0, (float)sin(PI / 6), (float)cos(PI / 6), 0},
-    //                             {0, 0, 0, 1}});
+    p1->rotate(Vec3(1, 0, 0), PI / 6);
+    p2->rotate(Vec3(1, 0, 1), PI / 6);
 
-    // mover a camera
-    camera.posicao = afimTransform(camera.posicao,
-                                   {{1, 0, 0, 0},
-                                    {0, 1, 0, 500},
-                                    {0, 0, 1, 500},
-                                    {0, 0, 0, 1}});
-
-    // rotaciona a camera
-    camera.W = afimTransform(camera.W,
-                             {{(float)cos(PI / 6), 0, (float)sin(PI / 6), 0},
-                              {0, 1, 0, 0},
-                              {(float)-sin(PI / 6), 0, (float)cos(PI / 6), 0},
-                              {0, 0, 0, 1}});
-
-    camera.U = afimTransform(camera.U,
-                             {{(float)cos(PI / 6), 0, (float)sin(PI / 6), 0},
-                              {0, 1, 0, 0},
-                              {(float)-sin(PI / 6), 0, (float)cos(PI / 6), 0},
-                              {0, 0, 0, 1}});
-
-    camera.V = afimTransform(camera.V,
-                             {{(float)cos(PI / 6), 0, (float)sin(PI / 6), 0},
-                              {0, 1, 0, 0},
-                              {(float)-sin(PI / 6), 0, (float)cos(PI / 6), 0},
-                              {0, 0, 0, 1}});
-
-    // rotaciona a camera
-    camera.W = afimTransform(camera.W,
-                             {{(float)cos(PI / 6), (float)sin(PI / 6), 0, 0},
-                              {(float)-sin(PI / 6), (float)cos(PI / 6), 0, 0},
-                              {0, 0, 1, 0},
-                              {0, 0, 0, 1}});
-
-    camera.U = afimTransform(camera.U,
-                             {{(float)cos(PI / 6), (float)sin(PI / 6), 0, 0},
-                              {(float)-sin(PI / 6), (float)cos(PI / 6), 0, 0},
-                              {0, 0, 1, 0},
-                              {0, 0, 0, 1}});
-
-    camera.V = afimTransform(camera.V,
-                             {{(float)cos(PI / 6), (float)sin(PI / 6), 0, 0},
-                              {(float)-sin(PI / 6), (float)cos(PI / 6), 0, 0},
-                              {0, 0, 1, 0},
-                              {0, 0, 0, 1}});
+    // t1->translate(0, 0, 200);
+    // t1->rotate(t1->getNormal(t1->baricentro), PI / 6);
 
     render(pixelsX, pixelsY, cena, camera, "depois");
 

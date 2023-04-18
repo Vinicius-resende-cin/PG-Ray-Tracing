@@ -22,7 +22,10 @@ public:
 
 	virtual bool intersecta(Intersecao &intersecao) = 0;
 	virtual bool INTERSECTA(const Ray &ray) = 0;
+
 	virtual Vec3 getNormal(Vec3 ponto) = 0;
+
+	virtual void applyColor(Cor c) = 0;
 };
 
 class Plano : public Forma
@@ -40,7 +43,14 @@ public:
 
 	bool intersecta(Intersecao &intersecao);
 	bool INTERSECTA(const Ray &ray);
+
 	Vec3 getNormal(Vec3 ponto);
+
+	void transform(vector<vector<float>> t, bool applyOnNormal = false);
+	void translate(float x, float y, float z);
+	void rotate(Vec3 axis, float radAngle);
+
+	void applyColor(Cor c);
 };
 
 class Esfera : public Forma
@@ -58,25 +68,74 @@ public:
 
 	bool intersecta(Intersecao &intersecao);
 	bool INTERSECTA(const Ray &ray);
+
 	Vec3 getNormal(Vec3 ponto);
+
+	void transform(vector<vector<float>> t);
+	void translate(float x, float y, float z);
+	void scale(float ratio);
+
+	void applyColor(Cor c);
 };
 
 class Triangulo : public Forma
 {
-protected:
+public:
 	vector<Vec3> vertices;
 	Vec3 normal;
+	Vec3 baricentro;
+
+private:
+	Vec3 calculateNormal();
 
 public:
 	Triangulo(float ka, float kd, float ks, float eta,
-			  const vector<Vec3> &vertices, const Vec3 &normal,
+			  const vector<Vec3> &vertices,
 			  const Cor &cor = Cor(1.0f, 1.0f, 1.0f));
 
 	~Triangulo();
 
 	bool intersecta(Intersecao &intersecao);
 	bool INTERSECTA(const Ray &ray);
+
 	Vec3 getNormal(Vec3 ponto);
+
+	void transform(vector<vector<float>> t);
+	void translate(float x, float y, float z);
+	void rotate(Vec3 axis, float radAngle);
+	void scale(float x, float y, float z);
+
+	void applyColor(Cor c);
 };
+
+// class TriangleMesh : public Forma
+// {
+// public:
+// 	vector<Vec3> vertices;
+// 	vector<int> triangleVertices;
+// 	vector<Triangulo *> triangulos;
+// 	Vec3 centroide;
+
+// public:
+// 	TriangleMesh(vector<Vec3> v);
+
+// 	~TriangleMesh();
+
+// 	bool intersecta(Intersecao &intersecao);
+// 	bool INTERSECTA(const Ray &ray);
+
+// 	Vec3 getNormal(Vec3 ponto);
+// 	void resetTriangles();
+
+// 	void transform(vector<vector<float>> t, int type);
+// 	void translate(float x, float y, float z);
+// 	void rotate(Vec3 axis, float angle);
+// 	void scale(float x, float y, float z);
+
+// 	void addVertice(Vec3 v);
+// 	void addTriangle(int v1, int v2, int v3);
+
+// 	void applyColor(Cor c);
+// };
 
 #endif
