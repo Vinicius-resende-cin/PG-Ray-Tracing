@@ -13,9 +13,9 @@ vector<vector<float>> I = {{1, 0, 0, 0},
 						   {0, 0, 1, 0},
 						   {0, 0, 0, 1}};
 
-Plano::Plano(float ka, float kd, float ks, float eta,
+Plano::Plano(float ka, float kd, float ks, float kr, float eta,
 			 const Vec3 &posicao, const Vec3 &normal,
-			 const Cor &cor) : Forma(ka, kd, ks, eta, cor),
+			 const Cor &cor) : Forma(ka, kd, ks, kr, eta, cor),
 							   posicao(posicao),
 							   normal(normal.normalizar())
 {
@@ -91,10 +91,10 @@ void Plano::applyColor(Cor c)
 	cor = c;
 };
 
-Esfera::Esfera(float ka, float kd, float ks, float eta,
+Esfera::Esfera(float ka, float kd, float ks, float kr, float eta,
 			   const Vec3 &centro, float raio,
 			   const Cor &cor)
-	: Forma(ka, kd, ks, eta, cor),
+	: Forma(ka, kd, ks, kr, eta, cor),
 	  centro(centro),
 	  raio(raio)
 {
@@ -197,10 +197,10 @@ void Esfera::applyColor(Cor c)
 	cor = c;
 };
 
-Triangulo::Triangulo(float ka, float kd, float ks, float eta,
+Triangulo::Triangulo(float ka, float kd, float ks, float kr, float eta,
 					 const vector<Vec3> &vertices,
 					 const Cor &cor)
-	: Forma(ka, kd, ks, eta, cor),
+	: Forma(ka, kd, ks, kr, eta, cor),
 	  vertices(vertices)
 {
 	calculatePosition();
@@ -220,7 +220,7 @@ bool Triangulo::intersecta(Intersecao &intersecao)
 	// check if ray is parallel
 
 	float a = pr_esc(edge1, h);
-	if (a < EPSILON)
+	if (a < EPSILON && a > -EPSILON)
 		return false; // raio paralelo
 
 	// find beta coordinate
@@ -263,7 +263,7 @@ bool Triangulo::INTERSECTA(const Ray &ray)
 	// check if ray is parallel
 
 	float a = pr_esc(edge1, h);
-	if (a < EPSILON)
+	if (a < EPSILON && a > -EPSILON)
 		return false; // raio paralelo
 
 	// find beta coordinate

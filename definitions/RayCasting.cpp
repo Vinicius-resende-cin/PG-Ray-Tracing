@@ -3,10 +3,9 @@
 
 #include "Phong.cpp"
 
-Intersecao castRay(Cena cena, const Ray &raioAtual)
+void castRay(Cena cena, Intersecao &intersec)
 {
-    Intersecao intersec = Intersecao(raioAtual);
-    Intersecao intersecAux = Intersecao(raioAtual);
+    Intersecao intersecAux = Intersecao(intersec.ray);
     Forma *obj;
 
     for (int i = 0; i < cena.formas.size(); i++)
@@ -19,8 +18,6 @@ Intersecao castRay(Cena cena, const Ray &raioAtual)
             intersec = intersecAux;
         }
     }
-
-    return intersec;
 }
 
 #endif

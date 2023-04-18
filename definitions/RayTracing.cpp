@@ -3,6 +3,27 @@
 
 #include "RayCasting.cpp"
 
+void bounceRay(Cena cena, Intersecao &intersec, int bounces)
+{
+    for (int i = 1; i <= bounces; i++)
+    {
+        Vec3 ponto_intersec = intersec.posicao();
+
+        // bounce ray
+        intersec.ray.origem = ponto_intersec + intersec.pForma->getNormal(ponto_intersec) * EPSILON;      // evita colisão com si próprio
+        intersec.ray.direcao = intersec.ray.direcao.refletir(intersec.pForma->getNormal(ponto_intersec)); // reflete a direcao do raio
+
+        castRay(cena, intersec);
+
+        if (intersec.intersectou())
+        {
+            Vec3 ponto_intersec = intersec.posicao();
+            intersec.cor += Phong(cena, intersec.pForma, intersec.ray.origem, ponto_intersec) * intersec.pForma->kr * (1 / i);
+            intersec.cor.clamp(0, 255);
+        }
+    }
+};
+
 Cor traceRay(Cena cena, const Camera &cam, int telaPx, int telaPy, int px, int py, int bounces)
 {
     // mapeia as coordenadas do pixel entre -1 e 1
@@ -23,20 +44,15 @@ Cor traceRay(Cena cena, const Camera &cam, int telaPx, int telaPy, int px, int p
 
     Intersecao intersec = Intersecao(raioPixelAtual);
 
-    for (int i = 0; i < bounces; i++)
+    castRay(cena, intersec);
+    if (intersec.intersectou())
     {
-        Intersecao auxIntersec = castRay(cena, intersec.ray);
+        Vec3 ponto_intersec = intersec.posicao();
+        intersec.cor += Phong(cena, intersec.pForma, intersec.ray.origem, ponto_intersec);
+        intersec.cor.clamp(0, 255);
 
-        if (auxIntersec.intersectou())
-        {
-            Vec3 ponto_intersec = auxIntersec.posicao();
-            intersec.cor += Phong(cena, auxIntersec.pForma, auxIntersec.ray.origem, ponto_intersec) * (1 / i);
-            intersec.cor.clamp(0, 255);
-
-            // bounce ray
-            intersec.ray.origem = ponto_intersec + intersec.pForma->getNormal(ponto_intersec) * EPSILON;      // evita colisão com si próprio
-            intersec.ray.direcao = intersec.ray.direcao.refletir(intersec.pForma->getNormal(ponto_intersec)); // reflete a direcao do raio
-        }
+        if (intersec.pForma->kr > 0)
+            bounceRay(cena, intersec, bounces);
     }
 
     return intersec.cor;

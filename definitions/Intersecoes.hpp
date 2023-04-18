@@ -12,12 +12,12 @@ using namespace std;
 class Forma
 {
 public:
-	float ka, kd, ks, eta;
+	float ka, kd, ks, kr, eta;
 	Cor cor;
 
 public:
-	Forma(float ka, float kd, float ks, float eta, Cor cor)
-		: ka(ka), kd(kd), ks(ks), eta(eta), cor(cor){};
+	Forma(float ka, float kd, float ks, float kr, float eta, Cor cor)
+		: ka(ka), kd(kd), ks(ks), kr(kr), eta(eta), cor(cor){};
 	virtual ~Forma() {}
 
 	virtual bool intersecta(Intersecao &intersecao) = 0;
@@ -35,7 +35,7 @@ public:
 	Vec3 normal;
 
 public:
-	Plano(float ka, float kd, float ks, float eta,
+	Plano(float ka, float kd, float ks, float kr, float eta,
 		  const Vec3 &posicao, const Vec3 &normal,
 		  const Cor &cor = Cor(1.0f, 1.0f, 1.0f));
 
@@ -60,7 +60,7 @@ public:
 	float raio;
 
 public:
-	Esfera(float ka, float kd, float ks, float eta,
+	Esfera(float ka, float kd, float ks, float kr, float eta,
 		   const Vec3 &centro, float raio,
 		   const Cor &cor = Cor(1.0f, 1.0f, 1.0f));
 
@@ -90,7 +90,7 @@ private:
 	void calculatePosition();
 
 public:
-	Triangulo(float ka, float kd, float ks, float eta,
+	Triangulo(float ka, float kd, float ks, float kr, float eta,
 			  const vector<Vec3> &vertices,
 			  const Cor &cor = Cor(1.0f, 1.0f, 1.0f));
 
