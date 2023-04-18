@@ -1,7 +1,7 @@
 #ifndef _RENDERER_
 #define _RENDERER_
 
-#include "definitions/RayCasting.cpp"
+#include "definitions/RayTracing.cpp"
 #include "lodepng.cpp"
 #include <iostream>
 #include <string>
@@ -18,7 +18,7 @@ void render(int pixelsX, int pixelsY, Cena cena, Camera camera, string imageName
         for (int x = 0; x < pixelsX; x++)
         {
             int index = (y * pixelsX + x) * 4;
-            Cor corPixel = castRay(cena, camera, pixelsX, pixelsY, x, y);
+            Cor corPixel = traceRay(cena, camera, pixelsX, pixelsY, x, y);
             image[index + 0] = corPixel.r; // R channel
             image[index + 1] = corPixel.g; // G channel
             image[index + 2] = corPixel.b; // B channel
