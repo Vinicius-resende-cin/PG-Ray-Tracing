@@ -3,7 +3,7 @@
 
 #include "Phong.cpp"
 
-void castRay(Cena cena, Intersecao &intersec)
+void castRay(const Cena &cena, Intersecao &intersec)
 {
     Intersecao intersecAux = Intersecao(intersec.ray);
     Forma *obj;

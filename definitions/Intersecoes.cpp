@@ -61,7 +61,7 @@ bool Plano::INTERSECTA(const Ray &ray)
 	return true;
 }
 
-Vec3 Plano::getNormal(Vec3 ponto) { return normal; };
+Vec3 Plano::getNormal(Vec3 ponto) { return normal.normalizar(); };
 
 void Plano::transform(vector<vector<float>> t, bool applyOnNormal /*=false*/)
 {
@@ -308,7 +308,11 @@ void Triangulo::calculatePosition()
 	normal = pr_vet(edge1, edge2).normalizar();
 };
 
-Vec3 Triangulo::getNormal(Vec3 ponto) { return normal; };
+Vec3 Triangulo::getNormal(Vec3 ponto)
+{
+	calculatePosition();
+	return normal.normalizar();
+};
 
 void Triangulo::transform(vector<vector<float>> t)
 {

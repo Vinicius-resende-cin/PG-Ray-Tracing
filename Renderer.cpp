@@ -8,7 +8,7 @@
 
 using namespace std;
 
-void render(int pixelsX, int pixelsY, Cena cena, Camera camera, string imageName)
+void render(int pixelsX, int pixelsY, const Cena &cena, const Camera &camera, string imageName)
 {
     // Create a vector of RGBA pixels
     vector<unsigned char> image(pixelsX * pixelsY * 4);

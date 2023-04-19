@@ -8,10 +8,11 @@ void bounceRay(Cena cena, Intersecao &intersec, int bounces)
     for (int i = 1; i <= bounces; i++)
     {
         Vec3 ponto_intersec = intersec.posicao();
+        Vec3 normalIntersec = intersec.pForma->getNormal(ponto_intersec);
 
         // bounce ray
-        intersec.ray.origem = ponto_intersec + intersec.pForma->getNormal(ponto_intersec) * EPSILON;      // evita colisão com si próprio
-        intersec.ray.direcao = intersec.ray.direcao.refletir(intersec.pForma->getNormal(ponto_intersec)); // reflete a direcao do raio
+        intersec.ray.origem = ponto_intersec + normalIntersec * 0.01f;        // evita colisão com si próprio
+        intersec.ray.direcao = intersec.ray.direcao.refletir(normalIntersec); // reflete a direcao do raio
 
         castRay(cena, intersec);
 
@@ -24,7 +25,7 @@ void bounceRay(Cena cena, Intersecao &intersec, int bounces)
     }
 };
 
-Cor traceRay(Cena cena, const Camera &cam, int telaPx, int telaPy, int px, int py, int bounces)
+Cor traceRay(const Cena &cena, const Camera &cam, int telaPx, int telaPy, int px, int py, int bounces)
 {
     // mapeia as coordenadas do pixel entre -1 e 1
     float coordX = ((float)px / (float)telaPx) * 2.0f - 1.0f;
@@ -38,7 +39,7 @@ Cor traceRay(Cena cena, const Camera &cam, int telaPx, int telaPy, int px, int p
     Vec3 vetorCima = cam.V * cam.altura;
 
     // Encontra o vetor que passa pelo pixel (px, py) na tela
-    const Vec3 pixelAtual = centroTela - coordY * vetorCima + coordX * vetorDireita;
+    const Vec3 pixelAtual = (centroTela - coordY * vetorCima + coordX * vetorDireita);
 
     Ray raioPixelAtual = Ray(cam.posicao, pixelAtual);
 

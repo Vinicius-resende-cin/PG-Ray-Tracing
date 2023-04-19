@@ -9,7 +9,7 @@
 
 using namespace std;
 
-float verifyRay(Luz l, const Ray &raio)
+float verifyRay(const Luz &l, const Ray &raio)
 {
     Vec3 toPoint = l.posicao - raio.origem;
 
@@ -24,7 +24,7 @@ float verifyRay(Luz l, const Ray &raio)
     return rayTMax;
 }
 
-float verifyRay(Cena cena, const Ray &raio)
+float verifyRay(const Cena &cena, const Ray &raio)
 {
     Intersecao intersecAux = Intersecao(raio);
     Forma *obj;
@@ -44,7 +44,7 @@ float verifyRay(Cena cena, const Ray &raio)
 }
 
 // Função do modelo de iluminação de Phong
-Cor Phong(Cena cena, Forma *obj, Vec3 cameraposicao, Vec3 p_intersec)
+Cor Phong(const Cena &cena, Forma *obj, const Vec3 &cameraposicao, const Vec3 &p_intersec)
 {
     // Vetor normalizado do ponto do objeto até a posição da câmera
     Vec3 viewDir = cameraposicao - p_intersec;
@@ -76,7 +76,7 @@ Cor Phong(Cena cena, Forma *obj, Vec3 cameraposicao, Vec3 p_intersec)
         Vec3 normal = obj->getNormal(p_intersec);
 
         // Reflexão da luz no objeto
-        Vec3 reflectDir = -(lightDir - normal * pr_esc(-lightDir, normal) * 2);
+        Vec3 reflectDir = -lightDir.refletir(normal);
         reflectDir = reflectDir.normalizar();
 
         // Intensidade da luz difusa
