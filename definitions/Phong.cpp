@@ -9,21 +9,6 @@
 
 using namespace std;
 
-float verifyRay(const Luz &l, const Ray &raio)
-{
-    Vec3 toPoint = l.posicao - raio.origem;
-
-    if (pr_esc(toPoint.normalizar(), raio.direcao.normalizar()) != 1)
-        return rayTMax;
-
-    float t = toPoint.comp();
-
-    if (t > EPSILON)
-        return t;
-
-    return rayTMax;
-}
-
 float verifyRay(const Cena &cena, const Ray &raio)
 {
     Intersecao intersecAux = Intersecao(raio);
