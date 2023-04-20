@@ -60,20 +60,20 @@ Cor Phong(const Cena &cena, Forma *obj, const Vec3 &cameraposicao, const Vec3 &p
 
     for (int i = 0; i < cena.luzes.size(); i++)
     {
-        // Vetor normalizado que chega da luz
+        // Vetor em direção à luz
         Vec3 lightDir = cena.luzes[i].posicao - p_intersec;
-        lightDir = lightDir.normalizar();
-
-        // projeta sombras
-        // Ray lightRay = Ray(p_intersec, lightDir);
-        // float lightDist = verifyRay(cena.luzes[i], lightRay);
-        // float closestObj = verifyRay(cena, lightRay);
-
-        // if (closestObj < lightDist) // luz obstruída
-        //     continue;
 
         // Vetor normal do objeto
         Vec3 normal = obj->getNormal(p_intersec);
+
+        // projeta sombras
+        Ray lightRay = Ray(p_intersec + normal * 0.01f, lightDir);
+        float closestObj = verifyRay(cena, lightRay);
+
+        if (closestObj < 1) // como o vetor em direção à luz não foi normalizado, a distância até a luz = 1
+            continue;       // luz obstruída
+
+        lightDir = lightDir.normalizar(); // normaliza a luz
 
         // Reflexão da luz no objeto
         Vec3 reflectDir = -lightDir.refletir(normal);
