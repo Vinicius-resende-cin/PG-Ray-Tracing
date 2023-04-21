@@ -13,9 +13,9 @@ vector<vector<float>> I = {{1, 0, 0, 0},
 						   {0, 0, 1, 0},
 						   {0, 0, 0, 1}};
 
-Plano::Plano(float ka, float kd, float ks, float kr, float eta,
+Plano::Plano(float ka, float kd, float ks, float kr, float eta, float refInd,
 			 const Vec3 &posicao, const Vec3 &normal,
-			 const Cor &cor) : Forma(ka, kd, ks, kr, eta, cor),
+			 const Cor &cor) : Forma(ka, kd, ks, kr, eta, refInd, cor),
 							   posicao(posicao),
 							   normal(normal.normalizar())
 {
@@ -91,10 +91,10 @@ void Plano::applyColor(Cor c)
 	cor = c;
 };
 
-Esfera::Esfera(float ka, float kd, float ks, float kr, float eta,
+Esfera::Esfera(float ka, float kd, float ks, float kr, float eta, float refInd,
 			   const Vec3 &centro, float raio,
 			   const Cor &cor)
-	: Forma(ka, kd, ks, kr, eta, cor),
+	: Forma(ka, kd, ks, kr, eta, refInd, cor),
 	  centro(centro),
 	  raio(raio)
 {
@@ -197,10 +197,10 @@ void Esfera::applyColor(Cor c)
 	cor = c;
 };
 
-Triangulo::Triangulo(float ka, float kd, float ks, float kr, float eta,
+Triangulo::Triangulo(float ka, float kd, float ks, float kr, float eta, float refInd,
 					 const vector<Vec3> &vertices,
 					 const Cor &cor)
-	: Forma(ka, kd, ks, kr, eta, cor),
+	: Forma(ka, kd, ks, kr, eta, refInd, cor),
 	  vertices(vertices)
 {
 	calculatePosition();

@@ -21,13 +21,17 @@ Luz l1 = Luz(Vec3(800, 400, 100), Cor(0, 0, 255));
 Luz l2 = Luz(Vec3(500, -400, 100), Cor(255, 255, 255));
 
 // definição dos objetos
-Esfera *e1 = new Esfera(0.5f, 0.5f, 0.0f, 0.6f, 3, Vec3(1100, 0, 0), 300, Cor(0, 255, 255));
-Esfera *e2 = new Esfera(0.6f, 0.6f, 0.3f, 0, 3, Vec3(600, 500, 500), 100, Cor(100, 0, 255));
+Esfera *e1 = new Esfera(0.5f, 0.5f, 0.0f, 0.3f, 3, 1.5f,
+                        Vec3(1100, 0, 0), 300, Cor(0, 255, 255));
+Esfera *e2 = new Esfera(0.6f, 0.6f, 0.3f, 0, 3, 0,
+                        Vec3(600, 500, 500), 100, Cor(100, 0, 255));
 
-Plano *p1 = new Plano(0.5f, 0.5f, 0.1f, 0.3f, 1, Vec3(0, 0, -400), Vec3(0, 0, 1), Cor(200, 200, 100));
-Plano *p2 = new Plano(0.5f, 0.5f, 0.1f, 0.3f, 2, Vec3(1100, -400, 0), Vec3(0, 1, 1), Cor(255, 255, 0));
+Plano *p1 = new Plano(0.5f, 0.5f, 0.1f, 0.3f, 1, 0,
+                      Vec3(0, 0, -400), Vec3(0, 0, 1), Cor(200, 200, 100));
+Plano *p2 = new Plano(0.5f, 0.5f, 0.1f, 0.3f, 2, 0,
+                      Vec3(1100, -400, 0), Vec3(0, 1, 1), Cor(255, 255, 0));
 
-Triangulo *t1 = new Triangulo(0.5f, 0.5f, 0.1f, 0.1f, 1,
+Triangulo *t1 = new Triangulo(0.5f, 0.5f, 0.1f, 0.1f, 1, 0,
                               vector<Vec3>{
                                   Vec3(855, 350, -200),
                                   Vec3(1100, 600, 200),

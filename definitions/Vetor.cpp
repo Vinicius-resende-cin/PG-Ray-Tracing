@@ -42,8 +42,22 @@ Vec3 Vec3::normalizar() const
 Vec3 Vec3::refletir(const Vec3 &normal) const
 {
 	// retorna uma vetor com a direção do raio refletida sobre a normal fornecida
-	return *this - (normal * pr_esc(*this, normal)) * 2;
+	Vec3 v = *this;
+	return v - (normal * pr_esc(v, normal)) * 2;
 }
+
+bool Vec3::refratar(Vec3 &v, const Vec3 &normal, float refInd)
+{
+	v = this->normalizar();
+	float r = 1 / refInd;
+	float cos_theta = pr_esc(-v, normal);
+	float sin2_theta = qdd(r) * (1 - qdd(cos_theta));
+	if (sin2_theta > 1)
+		return false;
+
+	v = r * v + (r * cos_theta - sqrt(1 - sin2_theta)) * normal;
+	return true;
+};
 
 Vec3 Vec3::neg() const
 {
