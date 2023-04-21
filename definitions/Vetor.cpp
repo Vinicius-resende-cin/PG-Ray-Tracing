@@ -46,17 +46,16 @@ Vec3 Vec3::refletir(const Vec3 &normal) const
 	return v - (normal * pr_esc(v, normal)) * 2;
 }
 
-bool Vec3::refratar(Vec3 &v, const Vec3 &normal, float refInd)
+Vec3 Vec3::refratar(const Vec3 &normal, float refInd) const
 {
-	v = this->normalizar();
-	float r = 1 / refInd;
-	float cos_theta = pr_esc(-v, normal);
-	float sin2_theta = qdd(r) * (1 - qdd(cos_theta));
+	Vec3 i = this->normalizar();
+	float cos_theta = pr_esc(-i, normal);
+	float sin2_theta = qdd(refInd) * (1 - qdd(cos_theta));
 	if (sin2_theta > 1)
-		return false;
+		return Vec3(0);
 
-	v = r * v + (r * cos_theta - sqrt(1 - sin2_theta)) * normal;
-	return true;
+	Vec3 r = refInd * i + (refInd * cos_theta - sqrt(1 - sin2_theta)) * normal;
+	return r;
 };
 
 Vec3 Vec3::neg() const
@@ -75,6 +74,16 @@ Vec3 pr_vet(Vec3 v1, Vec3 v2)
 				v1.z * v2.x - v1.x * v2.z,
 				v1.x * v2.y - v1.y * v2.x);
 }
+
+bool Vec3::operator==(const Vec3 &v)
+{
+	return this->x == v.x && this->y == v.y && this->z == v.z;
+};
+
+bool Vec3::operator!=(const Vec3 &v)
+{
+	return this->x != v.x || this->y != v.y || this->z != v.z;
+};
 
 Vec3 &Vec3::operator+=(const Vec3 &v)
 {

@@ -17,21 +17,23 @@ Camera camera(camPos, camDir, vUp, d, Hy, Hx);
 Cena cena(Cor(100, 100, 100));
 
 // definição das luzes
-Luz l1 = Luz(Vec3(800, 400, 100), Cor(0, 0, 255));
+Luz l1 = Luz(Vec3(800, 400, 100), Cor(255, 255, 255));
 Luz l2 = Luz(Vec3(500, -400, 100), Cor(255, 255, 255));
 
 // definição dos objetos
-Esfera *e1 = new Esfera(0.5f, 0.5f, 0.0f, 0.3f, 3, 1.5f,
-                        Vec3(1100, 0, 0), 300, Cor(0, 255, 255));
-Esfera *e2 = new Esfera(0.6f, 0.6f, 0.3f, 0, 3, 0,
-                        Vec3(600, 500, 500), 100, Cor(100, 0, 255));
+Esfera *e1 = new Esfera(0.1f, 0.0f, 0.0f, 0.1f, 0.9f, 3, 1.5f,
+                        Vec3(1100, 0, 0), 300, Cor(0, 0, 255));
+Esfera *e2 = new Esfera(0.6f, 0.6f, 0.3f, 0.0f, 0, 3, 0,
+                        Vec3(600, 500, 500), 100, Cor(50, 255, 50));
+Esfera *e3 = new Esfera(0.6f, 0.6f, 0.3f, 0.0f, 0, 3, 0,
+                        camPos, 100, Cor(100, 0, 255));
 
-Plano *p1 = new Plano(0.5f, 0.5f, 0.1f, 0.3f, 1, 0,
-                      Vec3(0, 0, -400), Vec3(0, 0, 1), Cor(200, 200, 100));
-Plano *p2 = new Plano(0.5f, 0.5f, 0.1f, 0.3f, 2, 0,
-                      Vec3(1100, -400, 0), Vec3(0, 1, 1), Cor(255, 255, 0));
+Plano *p1 = new Plano(0.5f, 0.5f, 0.1f, 0.3f, 0.0f, 1, 0,
+                      Vec3(0, 0, -400), Vec3(0, 0, 1), Cor(255, 255, 0));
+Plano *p2 = new Plano(0.5f, 0.5f, 0.1f, 0.3f, 0.0f, 2, 0,
+                      Vec3(1100, -400, 0), Vec3(0, 1, 1), Cor(100, 0, 255));
 
-Triangulo *t1 = new Triangulo(0.5f, 0.5f, 0.1f, 0.1f, 1, 0,
+Triangulo *t1 = new Triangulo(0.1f, 0.2f, 0.0f, 0.8f, 0.0f, 3, 1.5f,
                               vector<Vec3>{
                                   Vec3(855, 350, -200),
                                   Vec3(1100, 600, 200),
@@ -51,7 +53,7 @@ int main()
 {
     // inicialização da cena
     cena.addLuz(l1);
-    cena.addLuz(l2);
+    // cena.addLuz(l2);
     cena.addForma(f1);
     cena.addForma(f2);
     cena.addForma(f3);
@@ -63,13 +65,13 @@ int main()
     // e1->translate(-100, 200, 200);
 
     // p1->rotate(Vec3(1, 0, 0), PI / 6);
-    p2->rotate(Vec3(1, 0, 1), PI / 6);
+    // p2->rotate(Vec3(1, 0, 1), PI / 6);
 
     t1->translate(0, 0, 200);
     t1->rotate(Vec3(0.5f, -1, 1), PI / 3);
 
-    // camera.translate(0, 450, 500);
-    // camera.rotate(Vec3(0, -1, 1), -PI / 6);
+    camera.translate(0, 450, 500);
+    camera.rotate(Vec3(0, -1, 1), -PI / 6);
     // camera.scale(1.6f, 0.9f, 1);
 
     render(pixelsX, pixelsY, cena, camera, "depois");

@@ -36,9 +36,12 @@ public:
     Vec3 normalizar() const; // normalização de vetores
 
     Vec3 refletir(const Vec3 &normal) const;
-    bool refratar(Vec3 &v, const Vec3 &normal, float refInd);
+    Vec3 refratar(const Vec3 &normal, float refInd) const;
 
     Vec3 neg() const; // negativo
+
+    bool operator==(const Vec3 &v);
+    bool operator!=(const Vec3 &v);
 
     Vec3 &operator+=(const Vec3 &v);
     Vec3 &operator-=(const Vec3 &v);

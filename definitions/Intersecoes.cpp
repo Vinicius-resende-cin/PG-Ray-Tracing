@@ -13,9 +13,9 @@ vector<vector<float>> I = {{1, 0, 0, 0},
 						   {0, 0, 1, 0},
 						   {0, 0, 0, 1}};
 
-Plano::Plano(float ka, float kd, float ks, float kr, float eta, float refInd,
+Plano::Plano(float ka, float kd, float ks, float kr, float kt, float eta, float refInd,
 			 const Vec3 &posicao, const Vec3 &normal,
-			 const Cor &cor) : Forma(ka, kd, ks, kr, eta, refInd, cor),
+			 const Cor &cor) : Forma(ka, kd, ks, kr, kt, eta, refInd, cor),
 							   posicao(posicao),
 							   normal(normal.normalizar())
 {
@@ -40,6 +40,7 @@ bool Plano::intersecta(Intersecao &intersecao)
 	}
 	intersecao.t = t;
 	intersecao.pForma = this;
+	intersecao.cor = cor;
 	return true;
 }
 
@@ -91,10 +92,10 @@ void Plano::applyColor(Cor c)
 	cor = c;
 };
 
-Esfera::Esfera(float ka, float kd, float ks, float kr, float eta, float refInd,
+Esfera::Esfera(float ka, float kd, float ks, float kr, float kt, float eta, float refInd,
 			   const Vec3 &centro, float raio,
 			   const Cor &cor)
-	: Forma(ka, kd, ks, kr, eta, refInd, cor),
+	: Forma(ka, kd, ks, kr, kt, eta, refInd, cor),
 	  centro(centro),
 	  raio(raio)
 {
@@ -137,6 +138,7 @@ bool Esfera::intersecta(Intersecao &intersecao)
 
 	intersecao.t = t0;
 	intersecao.pForma = this;
+	intersecao.cor = cor;
 	return true;
 }
 
@@ -197,10 +199,10 @@ void Esfera::applyColor(Cor c)
 	cor = c;
 };
 
-Triangulo::Triangulo(float ka, float kd, float ks, float kr, float eta, float refInd,
+Triangulo::Triangulo(float ka, float kd, float ks, float kr, float kt, float eta, float refInd,
 					 const vector<Vec3> &vertices,
 					 const Cor &cor)
-	: Forma(ka, kd, ks, kr, eta, refInd, cor),
+	: Forma(ka, kd, ks, kr, kt, eta, refInd, cor),
 	  vertices(vertices)
 {
 	calculatePosition();
@@ -245,6 +247,7 @@ bool Triangulo::intersecta(Intersecao &intersecao)
 	{
 		intersecao.t = _t;
 		intersecao.pForma = this;
+		intersecao.cor = cor;
 		return true;
 	}
 	else // line intersection

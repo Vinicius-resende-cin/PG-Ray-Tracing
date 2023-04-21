@@ -11,6 +11,7 @@ using namespace std;
 
 float verifyRay(const Cena &cena, const Ray &raio)
 {
+    // verifica se há algum objeto entre a interseção e a luz e retorna o kt do objeto
     Intersecao intersecAux = Intersecao(raio);
     Forma *obj;
 
@@ -19,13 +20,13 @@ float verifyRay(const Cena &cena, const Ray &raio)
         obj = cena.formas[i];
         bool intersecao = obj->intersecta(intersecAux);
 
-        if (intersecao && intersecAux.t < rayTMax && intersecAux.t > EPSILON)
+        if (intersecao && intersecAux.t < rayTMax && intersecAux.t > EPSILON && intersecAux.t < 1)
         {
-            return intersecAux.t;
+            return intersecAux.pForma->kt;
         }
     }
 
-    return rayTMax;
+    return 1;
 }
 
 // Função do modelo de iluminação de Phong
@@ -53,10 +54,7 @@ Cor Phong(const Cena &cena, Forma *obj, const Vec3 &cameraposicao, const Vec3 &p
 
         // projeta sombras
         Ray lightRay = Ray(p_intersec + normal * 0.01f, lightDir);
-        float closestObj = verifyRay(cena, lightRay);
-
-        if (closestObj < 1) // como o vetor em direção à luz não foi normalizado, a distância até a luz = 1
-            continue;       // luz obstruída
+        float shadowK = verifyRay(cena, lightRay);
 
         lightDir = lightDir.normalizar(); // normaliza a luz
 
@@ -76,7 +74,7 @@ Cor Phong(const Cena &cena, Forma *obj, const Vec3 &cameraposicao, const Vec3 &p
         Cor specularColor = cena.luzes[i].cor * obj->ks * specularFactor;
         specularColor.clamp(0, 255);
 
-        I += diffuseColor + specularColor;
+        I += (diffuseColor + specularColor) * shadowK; // atenua a cor pela sombra projetada
         I.clamp(0, 255);
     }
 

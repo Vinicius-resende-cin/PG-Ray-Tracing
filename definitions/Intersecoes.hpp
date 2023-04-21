@@ -16,8 +16,8 @@ public:
 	Cor cor;
 
 public:
-	Forma(float ka, float kd, float ks, float kr, float eta, float refInd, Cor cor)
-		: ka(ka), kd(kd), ks(ks), kr(kr), eta(eta), refInd(refInd), cor(cor) { kt = 1 - kr; };
+	Forma(float ka, float kd, float ks, float kr, float kt, float eta, float refInd, Cor cor)
+		: ka(ka), kd(kd), ks(ks), kr(kr), kt(kt), eta(eta), refInd(refInd), cor(cor){};
 	virtual ~Forma() {}
 
 	virtual bool intersecta(Intersecao &intersecao) = 0;
@@ -35,7 +35,7 @@ public:
 	Vec3 normal;
 
 public:
-	Plano(float ka, float kd, float ks, float kr, float eta, float refInd,
+	Plano(float ka, float kd, float ks, float kr, float kt, float eta, float refInd,
 		  const Vec3 &posicao, const Vec3 &normal,
 		  const Cor &cor = Cor(1.0f, 1.0f, 1.0f));
 
@@ -60,7 +60,7 @@ public:
 	float raio;
 
 public:
-	Esfera(float ka, float kd, float ks, float kr, float eta, float refInd,
+	Esfera(float ka, float kd, float ks, float kr, float kt, float eta, float refInd,
 		   const Vec3 &centro, float raio,
 		   const Cor &cor = Cor(1.0f, 1.0f, 1.0f));
 
@@ -90,7 +90,7 @@ private:
 	void calculatePosition();
 
 public:
-	Triangulo(float ka, float kd, float ks, float kr, float eta, float refInd,
+	Triangulo(float ka, float kd, float ks, float kr, float kt, float eta, float refInd,
 			  const vector<Vec3> &vertices,
 			  const Cor &cor = Cor(1.0f, 1.0f, 1.0f));
 

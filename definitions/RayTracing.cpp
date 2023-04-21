@@ -3,94 +3,78 @@
 
 #include "RayCasting.cpp"
 
-void bounceRay(Cena cena, Intersecao &intersec, int bounces)
+Ray bounceRay(const Vec3 &ponto_intersec, const Vec3 &normalIntersec, const Ray &intersecRay)
 {
-    for (int i = 1; i <= bounces; i++)
+    // bounce ray
+    Vec3 origemRaioRefletido = ponto_intersec + normalIntersec * 0.01f;       // evita colisão com si próprio
+    Vec3 direcaoRaioRefletido = intersecRay.direcao.refletir(normalIntersec); // reflete a direcao do raio
+    return Ray(origemRaioRefletido, direcaoRaioRefletido);
+}
+
+Ray refractRay(const Vec3 &ponto_intersec, const Vec3 &normalIntersec, const Ray &intersecRay, float refInd, bool &refTot)
+{
+    float r = 1 / refInd;
+    Vec3 normal = normalIntersec;
+    if (pr_esc(intersecRay.direcao, normalIntersec) > 0) // se estiver dentro de um objeto
     {
-        Vec3 ponto_intersec = intersec.posicao();
-        Vec3 normalIntersec = intersec.pForma->getNormal(ponto_intersec);
-
-        // bounce ray
-        intersec.ray.origem = ponto_intersec + normalIntersec * 0.01f;        // evita colisão com si próprio
-        intersec.ray.direcao = intersec.ray.direcao.refletir(normalIntersec); // reflete a direcao do raio
-
-        castRay(cena, intersec);
-
-        if (intersec.intersectou())
-        {
-            Vec3 ponto_intersec = intersec.posicao();
-            intersec.cor += Phong(cena, intersec.pForma, intersec.ray.origem, ponto_intersec) * intersec.pForma->kr * (1 / i);
-            intersec.cor.clamp(0, 255);
-        }
+        normal = -normalIntersec; // ajusta a normal
+        r = refInd;               // ajusta o coeficiente de refração
     }
-};
 
-void refractRay(Cena cena, Intersecao &intersec, int bounces)
-{
-    for (int i = bounces; i > 0; i--)
+    Vec3 origemRaioRefratado = ponto_intersec - normal * 0.01f;          // evita colisões com si mesmo
+    Vec3 direcaoRaioRefratado = intersecRay.direcao.refratar(normal, r); // refrata o raio
+
+    if (direcaoRaioRefratado != Vec3(0))
     {
-        Vec3 ponto_intersec = intersec.posicao();
-        Vec3 normalIntersec = intersec.pForma->getNormal(ponto_intersec);
-
-        if (pr_esc(intersec.ray.direcao, normalIntersec) > 0)
-            normalIntersec = -normalIntersec;
-
-        // refract ray
-        intersec.ray.origem = ponto_intersec + normalIntersec * 0.01f;                                                // evita colisão com si próprio
-        bool refratou = intersec.ray.direcao.refratar(intersec.ray.direcao, normalIntersec, intersec.pForma->refInd); // refrata a direcao do raio
-
-        if (!refratou)
-        {
-            bounceRay(cena, intersec, i);
-            return;
-        }
-
-        castRay(cena, intersec);
-
-        if (intersec.intersectou())
-        {
-            Vec3 ponto_intersec = intersec.posicao();
-            intersec.cor += Phong(cena, intersec.pForma, intersec.ray.origem, ponto_intersec) * intersec.pForma->kt * (1 / i);
-            intersec.cor.clamp(0, 255);
-        }
+        return Ray(origemRaioRefratado, direcaoRaioRefratado);
     }
-};
+    else
+    {
+        return bounceRay(ponto_intersec, normalIntersec, intersecRay); // executa uma reflexão total
+    }
+}
 
-Cor traceRay(const Cena &cena, const Camera &cam, int telaPx, int telaPy, int px, int py, int bounces)
+Cor static traceRay(const Cena &cena, Ray &raioAtual, int bounces)
 {
-    // mapeia as coordenadas do pixel entre -1 e 1
-    float coordX = ((float)px / (float)telaPx) * 2.0f - 1.0f;
-    float coordY = ((float)py / (float)telaPy) * 2.0f - 1.0f;
-
-    // Encontra o vetor que aponta para o centro da tela
-    Vec3 centroTela = -(cam.W * cam.d);
-
-    // Calcula os vetores de localização pela tela
-    Vec3 vetorDireita = -cam.U * cam.largura;
-    Vec3 vetorCima = cam.V * cam.altura;
-
-    // Encontra o vetor que passa pelo pixel (px, py) na tela
-    const Vec3 pixelAtual = (centroTela - coordY * vetorCima + coordX * vetorDireita);
-
-    Ray raioPixelAtual = Ray(cam.posicao, pixelAtual);
-
-    Intersecao intersec = Intersecao(raioPixelAtual);
+    Intersecao intersec = Intersecao(raioAtual);
+    Cor c = Cor(0);
 
     castRay(cena, intersec);
     if (intersec.intersectou())
     {
         Vec3 ponto_intersec = intersec.posicao();
-        intersec.cor += Phong(cena, intersec.pForma, intersec.ray.origem, ponto_intersec);
-        intersec.cor.clamp(0, 255);
+        c += Phong(cena, intersec.pForma, intersec.ray.origem, ponto_intersec);
+        c.clamp(0, 255);
+
+        if (bounces <= 0)
+            return c;
+
+        Vec3 normalIntersec = intersec.pForma->getNormal(ponto_intersec);
 
         if (intersec.pForma->kr > 0)
-            bounceRay(cena, intersec, bounces);
+        {
+            Ray raioRefletido = bounceRay(ponto_intersec, normalIntersec, intersec.ray);
+            c += traceRay(cena, raioRefletido, bounces - 1) * intersec.pForma->kr;
+            c.clamp(0, 255);
+        }
 
-        // if (intersec.pForma->refInd > 0 && intersec.pForma->kt > 0)
-        //     refractRay(cena, intersec, bounces);
+        if (intersec.pForma->refInd > 0 && intersec.pForma->kt > 0)
+        {
+            bool refTot = false;
+            Ray raioRefratado = refractRay(ponto_intersec, normalIntersec, intersec.ray, intersec.pForma->refInd, refTot);
+
+            float k = intersec.pForma->kt;
+            if (refTot)
+                k = intersec.pForma->kr;
+
+            c += traceRay(cena, raioRefratado, bounces - 1) * k;
+            c.clamp(0, 255);
+        }
+
+        return c;
     }
 
-    return intersec.cor;
+    return cena.cor;
 };
 
 #endif
