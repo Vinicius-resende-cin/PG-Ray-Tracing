@@ -376,4 +376,79 @@ void Triangulo::applyColor(Cor c)
 	cor = c;
 };
 
+Malha::Malha(float ka, float kd, float ks, float kr, float kt, float eta, float refInd,
+			 const vector<Vec3> &v, const vector<vector<int>> &tv, const Cor &c)
+	: Forma(ka, kd, ks, kr, kt, eta, refInd, c),
+	  vertices(v), triangleVertices(tv)
+{
+	calcTriangles();
+};
+
+Malha::~Malha(){};
+
+void Malha::addVertice(Vec3 v)
+{
+	vertices.insert(vertices.end(), v);
+};
+
+void Malha::addTriangle(int v1, int v2, int v3)
+{
+	triangleVertices.insert(triangleVertices.end(), {v1, v2, v3});
+	calcTriangle(triangleVertices.size() - 1);
+};
+
+bool Malha::intersecta(Intersecao &intersec)
+{
+	bool intersecta = false;
+	Intersecao intersecAux(intersec);
+	for (int i = 0; i < triangulos.size(); i++)
+	{
+		bool intersecao = triangulos[i]->intersecta(intersecAux);
+
+		if (intersecao && intersecAux.t < intersec.t && intersec.t > EPSILON)
+		{
+			intersec = intersecAux;
+			intersecta = true;
+			ultimaNormal = triangulos[i]->getNormal(Vec3(0, 0, 0));
+		}
+	}
+	return intersecta;
+};
+
+bool Malha::INTERSECTA(const Ray &ray) { return true; };
+
+Vec3 Malha::getNormal(Vec3 ponto) { return ultimaNormal; };
+
+void Malha::calcTriangles()
+{
+	triangulos.clear();
+	for (int i = 0; i < triangleVertices.size(); i++)
+	{
+		calcTriangle(i);
+	}
+};
+
+void Malha::calcTriangle(int t)
+{
+	int x = triangleVertices[t][0];
+	int y = triangleVertices[t][1];
+	int z = triangleVertices[t][2];
+
+	vector<Vec3> verts = {vertices[x], vertices[y], vertices[z]};
+
+	triangulos.insert(triangulos.end(), new Triangulo(ka, kd, ks, kr, kt, eta, refInd, verts, cor));
+};
+
+void Malha::transform(float ka, float kd, float ks, float kr, float kt, float eta, float refInd,
+					  vector<vector<float>> t, int type){};
+void Malha::translate(float x, float y, float z){};
+void Malha::rotate(Vec3 axis, float angle){};
+void Malha::scale(float x, float y, float z){};
+
+void Malha::applyColor(Cor c)
+{
+	cor = c;
+	calcTriangles();
+};
+
 #endif //_INTERSECOES_

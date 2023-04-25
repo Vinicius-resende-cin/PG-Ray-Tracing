@@ -21,6 +21,7 @@ private:
     void calculateBase();
 
 public:
+    Camera();
     Camera(const Vec3 &C, const Vec3 &M,
            const Vec3 &Vup,
            float d, float altura, float largura);

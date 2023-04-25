@@ -23,10 +23,11 @@ public:
     Cor cor;
     vector<Forma *> formas{};
 
+    Cena(){};
     Cena(Cor c)
     {
         cor = c;
-    }
+    };
 
     void addLuz(Luz luz)
     {

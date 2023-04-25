@@ -110,34 +110,40 @@ public:
 	void applyColor(Cor c);
 };
 
-// class TriangleMesh : public Forma
-// {
-// public:
-// 	vector<Vec3> vertices;
-// 	vector<vector<int>> triangleVertices;
-// 	vector<Triangulo *> triangulos;
-// 	Vec3 centroide;
+class Malha : public Forma
+{
+public:
+	vector<Vec3> vertices;
+	vector<vector<int>> triangleVertices;
+	vector<Triangulo *> triangulos;
+	Vec3 centroide;
+	Vec3 ultimaNormal;
 
-// public:
-// 	TriangleMesh(vector<Vec3> v, vector<vector<int>> ts);
+private:
+	void calcTriangles();
+	void calcTriangle(int t);
 
-// 	~TriangleMesh();
+public:
+	Malha(float ka, float kd, float ks, float kr, float kt, float eta, float refInd,
+		  const vector<Vec3> &v, const vector<vector<int>> &tv, const Cor &c);
 
-// 	void addVertice(Vec3 v);
-// 	void addTriangle(int v1, int v2, int v3);
+	~Malha();
 
-// 	bool intersecta(Intersecao &intersecao);
-// 	bool INTERSECTA(const Ray &ray);
+	void addVertice(Vec3 v);
+	void addTriangle(int v1, int v2, int v3);
 
-// 	Vec3 getNormal(Vec3 ponto);
-// 	void resetTriangles();
+	bool intersecta(Intersecao &intersecao);
+	bool INTERSECTA(const Ray &ray);
 
-// 	void transform(vector<vector<float>> t, int type);
-// 	void translate(float x, float y, float z);
-// 	void rotate(Vec3 axis, float angle);
-// 	void scale(float x, float y, float z);
+	Vec3 getNormal(Vec3 ponto);
 
-// 	void applyColor(Cor c);
-// };
+	void transform(float ka, float kd, float ks, float kr, float kt, float eta, float refInd,
+				   vector<vector<float>> t, int type);
+	void translate(float x, float y, float z);
+	void rotate(Vec3 axis, float angle);
+	void scale(float x, float y, float z);
+
+	void applyColor(Cor c);
+};
 
 #endif
