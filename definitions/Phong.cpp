@@ -37,7 +37,7 @@ Cor Phong(const Cena &cena, Forma *obj, const Vec3 &cameraposicao, const Vec3 &p
     viewDir = viewDir.normalizar();
 
     // Intensidade da luz ambiente
-    Cor ambientColor = cena.cor * obj->ka;
+    Cor ambientColor = cena.globalLight * obj->ka;
     ambientColor.clamp(0, 255);
 
     // Intensidade total da luz

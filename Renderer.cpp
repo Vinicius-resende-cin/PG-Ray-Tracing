@@ -39,7 +39,7 @@ void render(int pixelsX, int pixelsY, const Cena &cena, const Camera &camera, st
             int index = (y * pixelsX + x) * 4;
 
             Ray raioPixelAtual = calcPixelRay(camera, pixelsX, pixelsY, x, y);
-            Cor corPixel = traceRay(cena, raioPixelAtual, 10);
+            Cor corPixel = traceRay(cena, raioPixelAtual, 4);
             corPixel.clamp(0, 255);
 
             image[index + 0] = corPixel.r; // R channel

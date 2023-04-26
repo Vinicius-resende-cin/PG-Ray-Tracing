@@ -20,13 +20,15 @@ class Cena
 {
 public:
     vector<Luz> luzes{};
-    Cor cor;
+    Cor background;
+    Cor globalLight;
     vector<Forma *> formas{};
 
     Cena(){};
-    Cena(Cor c)
+    Cena(Cor l, Cor b = Cor(0))
     {
-        cor = c;
+        background = b;
+        globalLight = l;
     };
 
     void addLuz(Luz luz)

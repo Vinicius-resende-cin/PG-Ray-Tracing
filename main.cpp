@@ -197,7 +197,7 @@ bool generateScene(string filename, Cena &cena, Camera &cam)
                 line >> Ig;
                 line >> Ib;
 
-                cena.cor = Cor(Ir, Ig, Ib);
+                cena.globalLight = Cor(Ir, Ig, Ib);
             }
         }
     }
@@ -222,8 +222,8 @@ int main()
         return 1;
     }
 
-    int pixelsX = 1000;
-    int pixelsY = 1000;
+    int pixelsX = camera.largura;
+    int pixelsY = camera.altura;
     render(pixelsX, pixelsY, cena, camera, "antes");
 
     camera.translate(0, 450, 500);

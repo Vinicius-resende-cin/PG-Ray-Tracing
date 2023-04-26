@@ -6,7 +6,7 @@
 void castRay(const Cena &cena, Intersecao &intersec)
 {
     Intersecao intersecAux = Intersecao(intersec.ray);
-    intersecAux.cor = cena.cor;
+    intersecAux.cor = cena.background;
     Forma *obj;
 
     for (int i = 0; i < cena.formas.size(); i++)

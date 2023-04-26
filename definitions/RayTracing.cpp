@@ -74,7 +74,7 @@ Cor static traceRay(const Cena &cena, Ray &raioAtual, int bounces)
         return c;
     }
 
-    return cena.cor;
+    return cena.background;
 };
 
 #endif
