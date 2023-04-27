@@ -24,8 +24,8 @@ public:
     Cor globalLight;
     vector<Forma *> formas{};
 
-    Cena(){};
-    Cena(Cor l, Cor b = Cor(0))
+    Cena(Cor b = Cor(100, 100, 100)) { background = b; };
+    Cena(Cor l, Cor b = Cor(100, 100, 100))
     {
         background = b;
         globalLight = l;
