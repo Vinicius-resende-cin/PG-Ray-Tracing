@@ -47,7 +47,7 @@ Cor Phong(const Cena &cena, Forma *obj, const Vec3 &cameraposicao, const Vec3 &p
     for (int i = 0; i < cena.luzes.size(); i++)
     {
         // Vetor em direção à luz
-        Vec3 lightDir = cena.luzes[i].posicao - p_intersec;
+        Vec3 lightDir = cena.luzes[i]->posicao - p_intersec;
 
         // Vetor normal do objeto
         Vec3 normal = obj->getNormal(p_intersec);
@@ -64,14 +64,14 @@ Cor Phong(const Cena &cena, Forma *obj, const Vec3 &cameraposicao, const Vec3 &p
 
         // Intensidade da luz difusa
         float diffuseFactor = pr_esc(lightDir, normal);
-        Cor diffTempColor = pr_hd(cena.luzes[i].cor, obj->cor);
+        Cor diffTempColor = pr_hd(cena.luzes[i]->cor, obj->cor);
         diffTempColor.clamp(0, 255);
         Cor diffuseColor = diffTempColor * obj->kd * max(diffuseFactor, 0.0f);
         diffuseColor.clamp(0, 255);
 
         // Intensidade da luz especular
         float specularFactor = pow(pr_esc(reflectDir, viewDir), obj->eta);
-        Cor specularColor = cena.luzes[i].cor * obj->ks * specularFactor;
+        Cor specularColor = cena.luzes[i]->cor * obj->ks * specularFactor;
         specularColor.clamp(0, 255);
 
         I += (diffuseColor + specularColor) * shadowK; // atenua a cor pela sombra projetada

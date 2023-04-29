@@ -151,7 +151,7 @@ Camera createCamera(stringstream &line)
     return Camera(pos, mira, up, d, vres, hres);
 }
 
-Luz createLuz(stringstream &line)
+Luz *createLuz(stringstream &line)
 {
     float lx, ly, lz, Or, Og, Ob;
     line >> lx;
@@ -164,7 +164,29 @@ Luz createLuz(stringstream &line)
     Vec3 pos(lx, ly, lz);
     Cor c(Or, Og, Ob);
 
-    return Luz(pos, c);
+    return new Luz(pos, c);
+}
+
+Plano *createPLuz(stringstream &line, Luz *&l)
+{
+    float lx, ly, lz, nx, ny, nz, Or, Og, Ob;
+    line >> lx;
+    line >> ly;
+    line >> lz;
+    line >> nx;
+    line >> ny;
+    line >> nz;
+    line >> Or;
+    line >> Og;
+    line >> Ob;
+
+    Vec3 pos(lx, ly, lz);
+    Vec3 n(nx, ny, nz);
+    Cor c(Or, Og, Ob);
+
+    PlanoLuz *pl = new PlanoLuz(pos, n, c);
+    l = dynamic_cast<Luz *>(pl);
+    return new Plano(0, 1, 0, 0, 0, 0, 0, pos - n * 0.01f, n, Cor(255));
 }
 
 bool generateScene(string filename, Cena &cena, Camera &cam)
@@ -189,6 +211,15 @@ bool generateScene(string filename, Cena &cena, Camera &cam)
             else if (type == "l")
             {
                 cena.addLuz(createLuz(line));
+            }
+            else if (type == "pl")
+            {
+                Luz *l;
+                Plano *p = createPLuz(line, l);
+                cena.addLuz(l);
+
+                // Forma *p1 = dynamic_cast<Forma *>(p);
+                // cena.addForma(p1);
             }
             else if (type == "a")
             {

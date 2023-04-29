@@ -8,18 +8,40 @@ struct Luz
 {
     Vec3 posicao;
     Cor cor;
+    bool isPlane;
 
-    Luz(Vec3 pos, Cor c)
+    Luz(){};
+
+    Luz(Vec3 pos, Cor c, bool p = false)
     {
         posicao = pos;
         cor = c;
+        isPlane = p;
+    }
+
+    virtual Vec3 getDir(Vec3 ponto) const
+    {
+        return posicao - ponto;
+    }
+};
+
+struct PlanoLuz : public Luz
+{
+    Vec3 normal;
+    PlanoLuz(Vec3 pos, Vec3 n, Cor c) : Luz(pos, c, true), normal(n.normalizar()) {}
+
+    Vec3 getDir(Vec3 ponto) const
+    {
+        Vec3 auxDir = ponto - posicao;
+        float dist = pr_esc(auxDir, normal);
+        return -normal * dist;
     }
 };
 
 class Cena
 {
 public:
-    vector<Luz> luzes{};
+    vector<Luz *> luzes{};
     Cor background;
     Cor globalLight;
     vector<Forma *> formas{};
@@ -31,7 +53,7 @@ public:
         globalLight = l;
     };
 
-    void addLuz(Luz luz)
+    void addLuz(Luz *luz)
     {
         luzes.insert(luzes.end(), luz);
     };
