@@ -47,7 +47,7 @@ Cor Phong(const Cena &cena, Forma *obj, const Vec3 &cameraposicao, const Vec3 &p
     for (int i = 0; i < cena.luzes.size(); i++)
     {
         // Vetor em direção à luz
-        Vec3 lightDir = cena.luzes[i]->posicao - p_intersec;
+        Vec3 lightDir = cena.luzes[i]->getDir(p_intersec);
 
         // Vetor normal do objeto
         Vec3 normal = obj->getNormal(p_intersec);
@@ -55,6 +55,11 @@ Cor Phong(const Cena &cena, Forma *obj, const Vec3 &cameraposicao, const Vec3 &p
         // projeta sombras
         Ray lightRay = Ray(p_intersec + normal * 0.01f, lightDir);
         float shadowK = verifyRay(cena, lightRay);
+
+        if (cena.luzes[i]->isRet && !(cena.luzes[i]->retangulo->INTERSECTA(lightRay)))
+        {
+            continue;
+        }
 
         lightDir = lightDir.normalizar(); // normaliza a luz
 

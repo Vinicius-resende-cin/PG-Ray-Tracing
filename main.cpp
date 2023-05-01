@@ -60,7 +60,7 @@ Plano *createPlano(stringstream &line)
     return new Plano(ka, kd, ks, kr, kt, p, 1.5f, pos, normal, c);
 }
 
-Malha *createMalha(stringstream &line, ifstream &file)
+Malha *createMalha(stringstream &line, ifstream &file, bool l = false)
 {
     size_t nt, nv;
     line >> nt;
@@ -105,7 +105,7 @@ Malha *createMalha(stringstream &line, ifstream &file)
 
     Cor c(Or, Og, Ob);
 
-    return new Malha(ka, kd, ks, kr, kt, p, 1.5f, verts, tvs, c);
+    return new Malha(ka, kd, ks, kr, kt, p, 1.5f, verts, tvs, c, l);
 }
 
 Forma *createForma(string &type, stringstream &line, ifstream &file)
@@ -169,20 +169,8 @@ Luz *createLuz(stringstream &line)
 
 Luz *createPLuz(stringstream &line, ifstream &file)
 {
-    Malha *m = createMalha(line, file);
-
-    string row;
-    getline(file, row);
-    line = stringstream(row);
-
-    float Or, Og, Ob;
-    line >> Or;
-    line >> Og;
-    line >> Ob;
-
-    Cor c(Or, Og, Ob);
-
-    return new Luz(m->centroide, c, true, m);
+    Malha *m = createMalha(line, file, true);
+    return new Luz(m->centroide + m->getGlobalNormal() * 0.0001f, m->cor, true, m);
 }
 
 bool generateScene(string filename, Cena &cena, Camera &cam)

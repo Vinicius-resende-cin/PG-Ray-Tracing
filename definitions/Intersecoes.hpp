@@ -14,10 +14,11 @@ class Forma
 public:
 	float ka, kd, ks, kr, kt, eta, refInd;
 	Cor cor;
+	bool isLight;
 
 public:
-	Forma(float ka, float kd, float ks, float kr, float kt, float eta, float refInd, Cor cor)
-		: ka(ka), kd(kd), ks(ks), kr(kr), kt(kt), eta(eta), refInd(refInd), cor(cor){};
+	Forma(float ka, float kd, float ks, float kr, float kt, float eta, float refInd, Cor cor, bool l = false)
+		: ka(ka), kd(kd), ks(ks), kr(kr), kt(kt), eta(eta), refInd(refInd), cor(cor), isLight(l){};
 	virtual ~Forma() {}
 
 	virtual bool intersecta(Intersecao &intersecao) = 0;
@@ -129,7 +130,7 @@ private:
 
 public:
 	Malha(float ka, float kd, float ks, float kr, float kt, float eta, float refInd,
-		  const vector<Vec3> &v, const vector<vector<int>> &tv, const Cor &c);
+		  const vector<Vec3> &v, const vector<vector<int>> &tv, const Cor &c, bool l = false);
 
 	~Malha();
 

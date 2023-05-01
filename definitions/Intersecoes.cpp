@@ -377,8 +377,8 @@ void Triangulo::applyColor(Cor c)
 };
 
 Malha::Malha(float ka, float kd, float ks, float kr, float kt, float eta, float refInd,
-			 const vector<Vec3> &v, const vector<vector<int>> &tv, const Cor &c)
-	: Forma(ka, kd, ks, kr, kt, eta, refInd, c),
+			 const vector<Vec3> &v, const vector<vector<int>> &tv, const Cor &c, bool l)
+	: Forma(ka, kd, ks, kr, kt, eta, refInd, c, l),
 	  vertices(v), triangleVertices(tv)
 {
 	calcTriangles();
@@ -415,7 +415,20 @@ bool Malha::intersecta(Intersecao &intersec)
 	return intersecta;
 };
 
-bool Malha::INTERSECTA(const Ray &ray) { return true; };
+bool Malha::INTERSECTA(const Ray &ray)
+{
+	bool intersecta = false;
+	for (int i = 0; i < triangulos.size(); i++)
+	{
+		bool intersecao = triangulos[i]->INTERSECTA(ray);
+
+		if (intersecao)
+		{
+			return true;
+		}
+	}
+	return false;
+};
 
 Vec3 Malha::getNormal(Vec3 ponto) { return ultimaNormal; };
 
