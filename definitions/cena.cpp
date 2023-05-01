@@ -8,33 +8,29 @@ struct Luz
 {
     Vec3 posicao;
     Cor cor;
-    bool isPlane;
+    bool isRet;
+    Malha *retangulo;
 
     Luz(){};
 
-    Luz(Vec3 pos, Cor c, bool p = false)
+    Luz(Vec3 pos, Cor c, bool p = false, Malha *r = nullptr)
     {
         posicao = pos;
         cor = c;
-        isPlane = p;
+        isRet = p;
+        retangulo = r;
     }
-
-    virtual Vec3 getDir(Vec3 ponto) const
-    {
-        return posicao - ponto;
-    }
-};
-
-struct PlanoLuz : public Luz
-{
-    Vec3 normal;
-    PlanoLuz(Vec3 pos, Vec3 n, Cor c) : Luz(pos, c, true), normal(n.normalizar()) {}
 
     Vec3 getDir(Vec3 ponto) const
     {
-        Vec3 auxDir = ponto - posicao;
-        float dist = pr_esc(auxDir, normal);
-        return -normal * dist;
+        if (isRet)
+        {
+            Vec3 normal = retangulo->getNormal(Vec3(0, 0, 0));
+            Vec3 auxDir = ponto - posicao;
+            float dist = pr_esc(auxDir, normal);
+            return -normal * dist;
+        }
+        return posicao - ponto;
     }
 };
 

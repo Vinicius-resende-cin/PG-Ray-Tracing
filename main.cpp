@@ -167,26 +167,22 @@ Luz *createLuz(stringstream &line)
     return new Luz(pos, c);
 }
 
-Plano *createPLuz(stringstream &line, Luz *&l)
+Luz *createPLuz(stringstream &line, ifstream &file)
 {
-    float lx, ly, lz, nx, ny, nz, Or, Og, Ob;
-    line >> lx;
-    line >> ly;
-    line >> lz;
-    line >> nx;
-    line >> ny;
-    line >> nz;
+    Malha *m = createMalha(line, file);
+
+    string row;
+    getline(file, row);
+    line = stringstream(row);
+
+    float Or, Og, Ob;
     line >> Or;
     line >> Og;
     line >> Ob;
 
-    Vec3 pos(lx, ly, lz);
-    Vec3 n(nx, ny, nz);
     Cor c(Or, Og, Ob);
 
-    PlanoLuz *pl = new PlanoLuz(pos, n, c);
-    l = dynamic_cast<Luz *>(pl);
-    return new Plano(0, 1, 0, 0, 0, 0, 0, pos - n * 0.01f, n, Cor(255));
+    return new Luz(m->centroide, c, true, m);
 }
 
 bool generateScene(string filename, Cena &cena, Camera &cam)
@@ -214,12 +210,11 @@ bool generateScene(string filename, Cena &cena, Camera &cam)
             }
             else if (type == "pl")
             {
-                Luz *l;
-                Plano *p = createPLuz(line, l);
+                Luz *l = createPLuz(line, entryFile);
                 cena.addLuz(l);
 
-                // Forma *p1 = dynamic_cast<Forma *>(p);
-                // cena.addForma(p1);
+                Forma *m1 = dynamic_cast<Forma *>(l->retangulo);
+                cena.addForma(m1);
             }
             else if (type == "a")
             {

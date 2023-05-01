@@ -419,6 +419,8 @@ bool Malha::INTERSECTA(const Ray &ray) { return true; };
 
 Vec3 Malha::getNormal(Vec3 ponto) { return ultimaNormal; };
 
+Vec3 Malha::getGlobalNormal() { return globalNormal; };
+
 void Malha::calcTriangles()
 {
 	triangulos.clear();
@@ -426,6 +428,9 @@ void Malha::calcTriangles()
 	{
 		calcTriangle(i);
 	}
+
+	calcCentroide();
+	calcGlobalNormal();
 };
 
 void Malha::calcTriangle(int t)
@@ -437,6 +442,31 @@ void Malha::calcTriangle(int t)
 	vector<Vec3> verts = {vertices[x], vertices[y], vertices[z]};
 
 	triangulos.insert(triangulos.end(), new Triangulo(ka, kd, ks, kr, kt, eta, refInd, verts, cor));
+};
+
+void Malha::calcCentroide()
+{
+	float weight = 1 / triangulos.size();
+	centroide = triangulos[0]->baricentro * weight;
+	for (int i = 1; i < triangulos.size(); i++)
+	{
+		centroide += triangulos[i]->baricentro * weight;
+	}
+};
+
+void Malha::calcGlobalNormal()
+{
+	globalNormal = triangulos[0]->getNormal(centroide);
+	Vec3 auxNormal = globalNormal;
+	for (int i = 0; i < triangulos.size(); i++)
+	{
+		auxNormal += triangulos[i]->getNormal(centroide);
+	}
+
+	if (auxNormal.comp2() == 0)
+		globalNormal = globalNormal.normalizar();
+	else
+		globalNormal = auxNormal.normalizar();
 };
 
 void Malha::transform(float ka, float kd, float ks, float kr, float kt, float eta, float refInd,

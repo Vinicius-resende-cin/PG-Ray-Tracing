@@ -118,10 +118,14 @@ public:
 	vector<Triangulo *> triangulos;
 	Vec3 centroide;
 	Vec3 ultimaNormal;
+	Vec3 globalNormal;
 
 private:
 	void calcTriangles();
 	void calcTriangle(int t);
+
+	void calcCentroide();
+	void calcGlobalNormal();
 
 public:
 	Malha(float ka, float kd, float ks, float kr, float kt, float eta, float refInd,
@@ -136,6 +140,7 @@ public:
 	bool INTERSECTA(const Ray &ray);
 
 	Vec3 getNormal(Vec3 ponto);
+	Vec3 getGlobalNormal();
 
 	void transform(float ka, float kd, float ks, float kr, float kt, float eta, float refInd,
 				   vector<vector<float>> t, int type);
