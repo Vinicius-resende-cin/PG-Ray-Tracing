@@ -484,7 +484,16 @@ void Malha::calcGlobalNormal()
 
 void Malha::transform(float ka, float kd, float ks, float kr, float kt, float eta, float refInd,
 					  vector<vector<float>> t, int type){};
-void Malha::translate(float x, float y, float z){};
+void Malha::translate(float x, float y, float z)
+{
+	for (int i = 1; i < vertices.size(); i++)
+	{
+		vertices[i] += Vec3(x, y, z);
+	}
+
+	calcTriangles();
+};
+
 void Malha::rotate(Vec3 axis, float angle){};
 void Malha::scale(float x, float y, float z){};
 
