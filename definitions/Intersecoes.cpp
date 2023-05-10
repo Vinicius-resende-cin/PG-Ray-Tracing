@@ -470,16 +470,6 @@ void Malha::calcCentroide()
 void Malha::calcGlobalNormal()
 {
 	globalNormal = triangulos[0]->getNormal(centroide);
-	Vec3 auxNormal = globalNormal;
-	for (int i = 0; i < triangulos.size(); i++)
-	{
-		auxNormal += triangulos[i]->getNormal(centroide);
-	}
-
-	if (auxNormal.comp2() == 0)
-		globalNormal = globalNormal.normalizar();
-	else
-		globalNormal = auxNormal.normalizar();
 };
 
 void Malha::transform(float ka, float kd, float ks, float kr, float kt, float eta, float refInd,

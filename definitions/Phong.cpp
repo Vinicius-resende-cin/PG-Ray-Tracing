@@ -20,7 +20,7 @@ float verifyRay(const Cena &cena, const Ray &raio)
         obj = cena.formas[i];
         bool intersecao = obj->intersecta(intersecAux);
 
-        if (intersecao && intersecAux.t < rayTMax && intersecAux.t > EPSILON && intersecAux.t < 1)
+        if (intersecao && intersecAux.t < 1 && intersecAux.t > EPSILON)
         {
             return intersecAux.pForma->kt;
         }
@@ -52,15 +52,39 @@ Cor Phong(const Cena &cena, Forma *obj, const Vec3 &cameraposicao, const Vec3 &p
         // Vetor normal do objeto
         Vec3 normal = obj->getNormal(p_intersec);
 
-        // projeta sombras
-        Ray lightRay = Ray(p_intersec + normal * 0.01f, lightDir);
-        float shadowK = verifyRay(cena, lightRay);
+        // cria o raio em direção à luz
+        Ray lightRay = Ray(p_intersec + normal, lightDir);
 
-        if (cena.luzes[i]->isRet && !(cena.luzes[i]->retangulo->INTERSECTA(lightRay)))
+        if (cena.luzes[i]->isRet)
         {
-            continue;
+            Intersecao auxInt = Intersecao(lightRay);
+            bool ilumina = cena.luzes[i]->retangulo->intersecta(auxInt);
+            if (!ilumina)
+            {
+                Ray inverseLightRay = Ray(p_intersec + normal, -lightDir);
+                Intersecao inverseInt = Intersecao(inverseLightRay);
+                ilumina = cena.luzes[i]->retangulo->intersecta(inverseInt);
+
+                if (!ilumina)
+                {
+                    continue;
+                }
+                else
+                {
+                    lightDir = -lightDir;
+                    lightDir *= inverseInt.t;
+                    lightRay = Ray(p_intersec + normal, lightDir);
+                }
+            }
+            else
+            {
+                lightDir *= auxInt.t;
+                lightRay = Ray(p_intersec + normal, lightDir);
+            }
         }
 
+        // projeta sombras
+        float shadowK = verifyRay(cena, lightRay);
         lightDir = lightDir.normalizar(); // normaliza a luz
 
         // Reflexão da luz no objeto

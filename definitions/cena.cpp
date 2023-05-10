@@ -25,10 +25,7 @@ struct Luz
     {
         if (isRet)
         {
-            Vec3 normal = retangulo->getGlobalNormal();
-            Vec3 auxDir = ponto - posicao;
-            float dist = pr_esc(auxDir, normal);
-            return -normal * dist;
+            return retangulo->getNormal(ponto);
         }
         return posicao - ponto;
     }
